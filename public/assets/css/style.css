@@ -1,0 +1,35 @@
+.info-box-icon {
+	width: 200px !important;
+}
+.info-box-content{
+	margin-left: 220px;
+}
+.left-padding {
+	padding-left: 8px;
+}
+.fixed-box {
+	max-height: 140px;
+	max-width: 140px;
+}
+
+.table tbody>tr>td.vert-align{
+    vertical-align: middle;
+}
+.table tbody>tr>td.horz-align{
+   text-align: center;
+}
+audio{
+	width: 250px;
+	margin-top: 5px;
+}
+.btn {
+	padding-bottom: 5px;
+}
+.treeview-menu a{
+	overflow: hidden;
+	margin-right: 5px;
+}
+
+.normal-wrap{
+	white-space: normal !important;
+}
