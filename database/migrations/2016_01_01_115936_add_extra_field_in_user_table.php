@@ -14,7 +14,6 @@ class AddExtraFieldInUserTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('employee_id')->unsigned()->nullable();
-            $table->integer('role_id')->unsigned()->nullable();
             $table->integer('branch_id')->unsigned()->nullable();
             $table->tinyInteger('status')->unsigned();
             $table->tinyInteger('all_access')->unsigned();

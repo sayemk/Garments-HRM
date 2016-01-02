@@ -15,6 +15,7 @@ class User extends Model implements AuthenticatableContract,
                                     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+    use \Aginev\Acl\Http\Traits\User;
 
     /**
      * The database table used by the model.

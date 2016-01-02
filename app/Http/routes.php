@@ -10,7 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('login', 'Auth\AuthController@getLogin');
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Auth\AuthController@getLogin');
+
+// Route::group(['middleware' => 'acl'], function () {
+//     Route::get('/admin/role', 'SomeController@index');
+// });
+
