@@ -44,6 +44,11 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
+            'employee_id' => 'required|exists:employees',
+            'status' => 'required|numeric',
+            'role_id' => 'required|exists.roles',
+            'branch_id' => 'required|exists.branches',
+            'all_access' => 'required|boolean',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -60,6 +65,11 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'employee_id' => $data['employee_id'],
+            'status' => $data['status'],
+            'branch_id' => $data['branch_id'],
+            'role_id' => $data['role_id'],
+            'all_access' => $data['role_id']
         ]);
     }
 }

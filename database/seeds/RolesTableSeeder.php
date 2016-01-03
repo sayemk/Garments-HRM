@@ -28,6 +28,7 @@ class RolesTableSeeder extends Seeder
             'role_description' => 'All Permissions'
         ]);
 
+        Model::guard();
         // Assign all permission to the admin
         $this->dispatch(new SetPermissions([$admin->id]));
     }
