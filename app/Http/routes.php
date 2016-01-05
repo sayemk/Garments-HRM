@@ -11,18 +11,18 @@
 |
 */
 Route::get('/', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('/logout', 'Auth\AuthController@getLogout');
 
-// Route::group(['middleware' => 'acl'], function () {
-//     Route::get('/admin/role', 'SomeController@index');
-// });
+Route::group(['middleware' => 'acl'], function () {
+    Route::get('/organization/', 'OrganizationController@show');
+    Route::any('/organization/edit', 'OrganizationController@edit');
+    // Registration routes...
+	Route::get('auth/register', 'Auth\AuthController@getRegister');
+	Route::post('auth/register', 'Auth\AuthController@postRegister');
+});
 
 Route::any('/pass', function() {
    return bcrypt('123456');
 });
 
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
-// Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');

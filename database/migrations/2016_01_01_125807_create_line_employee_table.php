@@ -15,7 +15,7 @@ class CreateLineEmployeeTable extends Migration
         Schema::create('line_employee', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('line_id')->unsigned();
-            $table->integer('employye_id')->unsigned();
+            $table->integer('employee_id')->unsigned();
             $table->timestamps();
         });
     }
