@@ -157,8 +157,11 @@
     <script src="{{ url('/assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="{{ url('/assets/plugins/chartjs/Chart.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  
+    
+    <!-- JQuery Form Validation -->
+
+    <script src="{{ asset('/assets/plugins/jQueryFormValidation/jquery.validate.min.js') }}"></script>
+    
     <script src="{{ asset('/assets/js/my.js') }}"></script>
 
     {{-- Custom Script --}}

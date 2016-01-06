@@ -6,11 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Model\Organization;
 
-class OrganizationController extends Controller
+class BranchController extends Controller
 {
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,11 +46,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $organization = Organization::get()->first();
-        
-        return view('organization.show', compact('organization'));
+        //
     }
 
     /**
@@ -51,19 +57,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-        if (\Input::get('delete')) abort(403);
-
-        $edit = \DataEdit::source(new Organization());
-        $edit->link("organization","Organization", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('name','Organization Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-
-        $edit->add('address','Address <i class="fa fa-asterisk text-danger"></i>', 'textarea')->rule('required');
-        
-        $edit->build();
-
-        return $edit->view('organization.edit', compact('edit')); 
+        //
     }
 
     /**

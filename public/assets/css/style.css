@@ -33,3 +33,11 @@ audio{
 .normal-wrap{
 	white-space: normal !important;
 }
+
+.padding-left{
+	padding-left: 10px;
+}
+
+.form-group label {
+  font-size: 15px !important;
+}
