@@ -29,7 +29,7 @@
             <a href="{{ url('line') }}"><i class="fa fa-circle-o"></i>Line</a>
           </li>
           <li class="@if($active == 'designation') active @endif">
-            <a href="{{ url('designation') }}"><i class="fa fa-circle-o"></i>designation</a>
+            <a href="{{ url('designation') }}"><i class="fa fa-circle-o"></i>Designation</a>
           </li>
         </ul>
       </li>
