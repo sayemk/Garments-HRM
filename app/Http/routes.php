@@ -21,6 +21,8 @@ Route::group(['middleware' => 'acl'], function () {
     Route::any('/branch/edit', 'BranchController@edit');
     Route::get('/department', 'DepartmentController@index');
     Route::any('/department/edit', 'DepartmentController@edit');
+    Route::get('/designation', 'DesignationController@index');
+    Route::any('/designation/edit', 'DesignationController@edit');
     
 
     // Registration routes...

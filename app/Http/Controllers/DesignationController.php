@@ -3,14 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Model\Designation;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Model\Organization;
 
-class OrganizationController extends Controller
+class DesignationController extends Controller
 {
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+       
+        $grid = \DataGrid::source("designations");
+
+        $grid->add('id','ID', true);
+        $grid->add('name','Designation Name',true); 
+       
+       
+        $grid->add('description','Description'); 
+        $grid->edit('designation/edit', 'Edit','show|modify|delete');
+        $grid->link('designation/edit',"New Task", "TR",['class' =>'btn btn-success']);
+        $grid->orderBy('id','ASC');
+        
+        $grid->paginate(10);
+
+
+        return  view('designation.index', compact('grid'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,11 +61,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $organization = Organization::get()->first();
-        
-        return view('organization.show', compact('organization'));
+        //
     }
 
     /**
@@ -51,20 +72,21 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    
+        public function edit()
     {
-        if (\Input::get('delete')) abort(403);
+        $edit = \DataEdit::source(new Designation());
+        $edit->link("designation","Designation", "TR",['class' =>'btn btn-primary'])->back();
+        $edit->add('name','Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
 
-        $edit = \DataEdit::source(new Organization());
-        $edit->link("organization","Organization", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('name','Organization Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-
-        $edit->add('address','Address <i class="fa fa-asterisk text-danger"></i>', 'textarea')->rule('required');
-        
+        $edit->add('description','Description', 'redactor');
+       
         $edit->build();
+        return $edit->view('designation.edit', compact('edit')); 
 
-        return $edit->view('organization.edit', compact('edit')); 
+
     }
+    
 
     /**
      * Update the specified resource in storage.
