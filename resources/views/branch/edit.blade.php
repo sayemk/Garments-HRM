@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Organization')
+@section('title','Branch')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'organization','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'branch','parent_menu'=>'setting'])
 
 @endsection
 
@@ -12,7 +12,7 @@
          
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Organization </h3>
+              <h3 class="box-title padding-left">Branch </h3>
            
               <div class="box-body">
                 
@@ -23,6 +23,12 @@
 	                  {!! $edit->message !!}	                 
 	                  {!! $edit->header !!}
 	                 
+	                    <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('organization_id') !!}
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
@@ -57,5 +63,26 @@
 @endsection
 
 @section('script')
-  <script src="{{ asset('/assets/js/validation/organization.js') }}"></script>
+  <script>
+  	jQuery(document).ready(function($) {
+	  $('form').validate({ 
+        
+        rules: {
+            
+            name: {
+                required: true,
+            },
+            address: {
+               required: true
+            },
+            organization_id: {
+            	required: true,
+            	number:true
+            }
+
+        },
+
+    });
+});
+  </script>
 @endsection
