@@ -17,6 +17,10 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::group(['middleware' => 'acl'], function () {
     Route::get('/organization/', 'OrganizationController@show');
     Route::any('/organization/edit', 'OrganizationController@edit');
+    Route::get('/branch', 'BranchController@index');
+    Route::any('/branch/edit', 'BranchController@edit');
+    
+
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Model\Branch;
+use App\Model\Organization;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class BranchController extends Controller
 {
@@ -16,72 +18,40 @@ class BranchController extends Controller
      */
     public function index()
     {
-        //
+        
+
+        $grid = \DataGrid::source(Branch::with('organization'));
+
+        $grid->add('id','ID', true);
+        $grid->add('name','Branch Name',true); 
+       
+        $grid->add('{{ $organization->name }}','Oranization','organization_id');
+        $grid->add('address','Adress'); 
+        $grid->edit('branch/edit', 'Edit','show|modify|delete');
+        $grid->link('branch/edit',"New Task", "TR",['class' =>'btn btn-success']);
+        $grid->orderBy('name','ASC');
+        
+        $grid->paginate(10);
+
+
+        return  view('branch.index', compact('grid'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function edit()
     {
-        //
+        
+        $edit = \DataEdit::source(new Branch());
+        $edit->link("branch","Branch", "TR",['class' =>'btn btn-primary'])->back();
+        $edit->add('organization_id','Organization <i class="fa fa-asterisk text-danger"></i>','select')
+                ->options(Organization::lists("name", "id")->all())
+                ->rule('required|exists:organizations,id');
+        $edit->add('name','Branch Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+
+        $edit->add('address','Address <i class="fa fa-asterisk text-danger"></i>', 'textarea')->rule('required');
+        
+        $edit->build();
+
+        return $edit->view('branch.edit', compact('edit')); 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
