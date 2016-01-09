@@ -39,3 +39,8 @@ Route::any('/pass', function() {
    return bcrypt('123456');
 });
 
+Route::any('/test/branch', function() {
+   $branch =  \App\Model\Branch::where(['id'=>1])->with('departments')->get();
+   print_r(array_pluck($branch[0]->departments->toArray(), 'id'));
+});
+

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Model\Branch;
 use App\Model\Department;
@@ -17,7 +16,11 @@ class SectionController extends Controller
 
         $filter->add('department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
                     ->scope(function($query){
-                        return $query;
+                        $branch = Branch::where(['id'=>\Input::get('department_branch_name')])->with('departments')->get();
+                        
+                        $departments = array_pluck($branch[0]->departments->toArray(), 'id');
+                        return $query->whereIn('department_id',$departments);
+
                     });
         $filter->add('department.name','Department','select')->options([''=>'Select Department'])->options(Department::lists("name", "id")->all());
         $filter->submit('search');
