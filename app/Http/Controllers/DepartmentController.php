@@ -60,4 +60,9 @@ class DepartmentController extends Controller
 
 
     }
+
+    public function getLists($branch_id)	
+    {
+    	return Department::where(['branch_id'=>$branch_id])->get();
+    }
 }

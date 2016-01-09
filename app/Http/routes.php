@@ -21,16 +21,29 @@ Route::group(['middleware' => 'acl'], function () {
     Route::any('/branch/edit', 'BranchController@edit');
     Route::get('/department', 'DepartmentController@index');
     Route::any('/department/edit', 'DepartmentController@edit');
+    Route::get('/department/json/{branch_id}', 'DepartmentController@getLists')->where('id', '[0-9]+');
+
     Route::get('/designation', 'DesignationController@index');
     Route::any('/designation/edit', 'DesignationController@edit');
+
+    Route::get('/section', 'SectionController@index');
+    Route::any('/section/edit', 'SectionController@edit');
+
     
 
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+
 });
 
 Route::any('/pass', function() {
    return bcrypt('123456');
+});
+
+Route::any('/test/branch', function() {
+   $branch =  \App\Model\Branch::where(['id'=>1])->with('departments')->get();
+   print_r(array_pluck($branch[0]->departments->toArray(), 'id'));
 });
 
