@@ -19,13 +19,21 @@ class DesignationController extends Controller
        
         $grid = \DataGrid::source("designations");
 
-        $grid->add('id','ID', true);
+        $grid->add('id','S_No', true)->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart; 
+            return ($pageNumber-1)*10 +$serialStart;
+
+
+        });
         $grid->add('name','Designation Name',true); 
        
        
         $grid->add('description','Description'); 
         $grid->edit('designation/edit', 'Edit','show|modify|delete');
-        $grid->link('designation/edit',"New Task", "TR",['class' =>'btn btn-success']);
+        $grid->link('designation/edit',"New Designation", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('id','ASC');
         
         $grid->paginate(10);

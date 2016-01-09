@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use App\Model\Branch;
 use App\Model\Department;
 use Illuminate\Http\Request;
@@ -22,13 +21,21 @@ class DepartmentController extends Controller
 
         $grid = \DataGrid::source($filter);
 
-        $grid->add('id','ID', true);
+        $grid->add('id','S_No', true)->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart; 
+            return ($pageNumber-1)*10 +$serialStart;
+
+
+        });
         $grid->add('name','Department Name',true); 
        
         $grid->add('{{ $branch->name }}','Branch','branch_id');
         $grid->add('description','Description'); 
-        $grid->edit('department/edit', 'Edit','show|modify|delete');
-        $grid->link('department/edit',"New Task", "TR",['class' =>'btn btn-success']);
+        $grid->edit('department/edit', 'Edit','show|modify|delete')->style('width:10%');
+        $grid->link('department/edit',"New Department", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('branch_id','ASC');
         
         $grid->paginate(10);

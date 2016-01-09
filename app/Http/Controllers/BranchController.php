@@ -22,13 +22,21 @@ class BranchController extends Controller
 
         $grid = \DataGrid::source(Branch::with('organization'));
 
-        $grid->add('id','ID', true);
+        $grid->add('id','S_No', true)->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart; 
+            return ($pageNumber-1)*10 +$serialStart;
+
+
+        });
         $grid->add('name','Branch Name',true); 
        
         $grid->add('{{ $organization->name }}','Oranization','organization_id');
         $grid->add('address','Adress'); 
         $grid->edit('branch/edit', 'Edit','show|modify|delete');
-        $grid->link('branch/edit',"New Task", "TR",['class' =>'btn btn-success']);
+        $grid->link('branch/edit',"New Branch", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('name','ASC');
         
         $grid->paginate(10);
