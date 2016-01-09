@@ -13,7 +13,7 @@ class AddBranchIdColumnInSection extends Migration
     public function up()
     {
         Schema::table('sections', function (Blueprint $table) {
-            $table->integers('branch_id')->default('0')->after('id')
+            $table->integer('branch_id')->default('0')->after('id');
         });
     }
 

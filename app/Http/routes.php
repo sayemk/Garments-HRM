@@ -21,6 +21,7 @@ Route::group(['middleware' => 'acl'], function () {
     Route::any('/branch/edit', 'BranchController@edit');
     Route::get('/department', 'DepartmentController@index');
     Route::any('/department/edit', 'DepartmentController@edit');
+    Route::get('/department/json/{branch_id}', 'DepartmentController@getLists')->where('id', '[0-9]+');
 
     Route::get('/designation', 'DesignationController@index');
     Route::any('/designation/edit', 'DesignationController@edit');
@@ -33,6 +34,8 @@ Route::group(['middleware' => 'acl'], function () {
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+
 });
 
 Route::any('/pass', function() {

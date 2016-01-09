@@ -16,50 +16,90 @@ class SectionController extends Controller
 
         $filter->add('department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
                     ->scope(function($query){
-                        $branch = Branch::where(['id'=>\Input::get('department_branch_name')])->with('departments')->get();
+                        if (!empty(\Input::get('department_branch_name'))) {
+                            $branch = Branch::where(['id'=>\Input::get('department_branch_name')])->with('departments')->get();
+                            $departments = array_pluck($branch[0]->departments->toArray(), 'id');
+                            return $query->whereIn('department_id',$departments);
+                        } else {
+                           return $query; 
+                        }
                         
-                        $departments = array_pluck($branch[0]->departments->toArray(), 'id');
-                        return $query->whereIn('department_id',$departments);
 
-                    });
-        $filter->add('department.name','Department','select')->options([''=>'Select Department'])->options(Department::lists("name", "id")->all());
+                    })
+                    ->attributes(['data-target'=>'department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $filter->add('department.name','Department','select')
+            ->options([''=>"--Select--"])
+            ->options(Department::where('branch_id', \Input::get('department_branch_name'))->lists("name", "id"))
+            ->scope(function($query){
+                if (!empty(\Input::get('department_name')) && trim(\Input::get('department_name')) !="--Select--") {
+
+                   return $query->where('department_id',\Input::get('department_name'));
+
+                }else{
+                    return $query;
+                }
+            });
         $filter->submit('search');
         $filter->reset('reset');
         $filter->build();
 
         $grid = \DataGrid::source($filter);
 
-        $grid->add('id','ID', true);
+        $grid->add('id','#')->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart; 
+            return ($pageNumber-1)*config('hrm.pagination_per_page', 15) +$serialStart;
+
+
+        });
         $grid->add('name','Section Name',true); 
        
         $grid->add('{{ $department->branch->name }}','Branch','branch_id');
         $grid->add('{{ $department->name }}','Dpartment','department_id');
         $grid->add('description','Description'); 
-        $grid->edit('department/edit', 'Edit','show|modify|delete');
-        $grid->link('department/edit',"New Task", "TR",['class' =>'btn btn-success']);
-        $grid->orderBy('department_id','ASC');
+        $grid->edit('section/edit', 'Edit','show|modify|delete');
+        $grid->link('section/edit',"New Section", "TR",['class' =>'btn btn-success']);
+        $grid->orderBy('name','ASC');
         
-        $grid->paginate(10);
+        $grid->paginate(config('hrm.pagination_per_page', 15));
 
 
         return  view('section.index', compact('grid','filter'));
     }
 
+   
     public function edit()
     {
-        $edit = \DataEdit::source(new Department());
-        $edit->link("department","Department", "TR",['class' =>'btn btn-primary'])->back();
+        
+        $section = Section::find(\Input::get('modify'));
+        $section = (!empty($section->branch_id)) ? $section->branch_id : 0;
+
+        $departments =Department::where('branch_id', $section)->lists("name", "id");
+        
+        $edit = \DataEdit::source(new Section());
+        $edit->link("section","Section", "TR",['class' =>'btn btn-primary'])->back();
         $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
-                ->options(Branch::lists("name", "id")->all())
-                ->rule('required|exists:branches,id');
-        $edit->add('name','Department Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+                ->options([''=>"--Select--"])
+                ->options(Branch::lists("name", "id"))
+                ->rule('required|exists:branches,id')
+                 ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+            ->options([''=>"--Select--"])
+            ->options($departments)
+            ->rule('required|exists:departments,id');
+
+        $edit->add('name','Section Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
 
         $edit->add('description','Description', 'textarea');
        
         $edit->build();
-        return $edit->view('department.edit', compact('edit')); 
-
+        return $edit->view('section.edit', compact('edit')); 
 
     }
+
 
 }
