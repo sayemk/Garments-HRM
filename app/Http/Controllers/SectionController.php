@@ -100,6 +100,9 @@ class SectionController extends Controller
         return $edit->view('section.edit', compact('edit')); 
 
     }
-
+    public function getLists($department_id)   
+    {
+        return Section::where(['department_id'=>$department_id])->get();
+    }
 
 }

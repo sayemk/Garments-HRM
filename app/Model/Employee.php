@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +9,7 @@ class Employee extends Model
     
     public function line()
     {
-    	return $this->belongsToMany("App\Model\Line");
+    	return $this->belongsTo("App\Model\Line");
     }
 
     public function department()
@@ -19,7 +19,7 @@ class Employee extends Model
 
     public function designations()
     {
-    	return $this->belongsToMany("App\Model\Designation");
+    	return $this->belongsToMany("App\Model\Designation",'employee_designation','employee_id','designation_id');
     }
 
     public function educations()

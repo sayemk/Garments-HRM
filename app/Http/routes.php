@@ -28,12 +28,17 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/section', 'SectionController@index');
     Route::any('/section/edit', 'SectionController@edit');
+    Route::get('/section/json/{department_id}', 'SectionController@getLists')->where('id', '[0-9]+');
 
+    Route::get('/employee', 'EmployeeController@index');
+    Route::any('/employee/edit', 'EmployeeController@edit');
+    Route::get('/employee/json/{department_id}', 'EmployeeController@getLists')->where('id', '[0-9]+');
     
 
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
+
 
 
 });

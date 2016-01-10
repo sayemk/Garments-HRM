@@ -15,7 +15,7 @@ class CreateEmployeeDesignationTable extends Migration
         Schema::create('employee_designation', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('designation_id')->unsigned();
-            $table->integer('employye_id')->unsigned();
+            $table->integer('employee_id')->unsigned();
             $table->tinyInteger('status')->unsigned();
             $table->integer('created_by')->unsigned();
             $table->integer('updated_by')->unsigned();
