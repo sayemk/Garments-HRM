@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Line extends Model
 {
-    
+     
     public function section()
     {
     	return $this->belongsTo("App\Model\Section");

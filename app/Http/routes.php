@@ -32,8 +32,11 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/employee', 'EmployeeController@index');
     Route::any('/employee/edit', 'EmployeeController@edit');
-    Route::get('/employee/json/{department_id}', 'EmployeeController@getLists')->where('id', '[0-9]+');
+    Route::get('/employee/json/{department_id}','EmployeeController@getLists')->where('id', '[0-9]+');
     
+    Route::get('/line', 'LineController@index');
+    Route::any('/line/edit', 'LineController@edit');
+
 
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
