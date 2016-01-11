@@ -16,6 +16,7 @@ class EmployeeTableSeeder extends Seeder
         foreach (range(1,100) as $value) {
         	DB::table('employees')->insert([
 	            'name' => $faker->name(),
+	            'employee_id' => 'EMP-'.$faker->numberBetween(1,1000),
 	            'gender' => $faker->numberBetween(1,2),
 	            'dob' => $faker->date('Y-m-d'),
 	            'father_name' => $faker->name(),

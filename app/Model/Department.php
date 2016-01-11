@@ -13,7 +13,7 @@ class Department extends Model
     	return $this->belongsTo("App\Model\Branch");
     }
 
-    public function section()
+    public function sections()
     {
     	return $this->hasMany("App\Model\Section");
     }

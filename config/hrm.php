@@ -3,6 +3,6 @@
 return [
 
     // Pagination Config
-    'pagination_per_page' => 20,
+    'pagination_per_page' => 5,
 
 ];
