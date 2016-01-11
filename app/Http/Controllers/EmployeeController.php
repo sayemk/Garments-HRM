@@ -37,7 +37,6 @@ class EmployeeController extends Controller
                         } else {
                            return $query; 
                         }
-                        
 
                     })
                     ->attributes(['data-target'=>'line_section_department','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
@@ -88,7 +87,7 @@ class EmployeeController extends Controller
             })
             ->attributes(['data-target'=>'department_section_name','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $filter->add('line','Section','select')
+        	$filter->add('line','Section','select')
 
             ->options([''=>"Select Line"])
             ->options(Line::where('section_id', \Input::get('line_section'))->lists("name", "id"))
@@ -165,7 +164,7 @@ class EmployeeController extends Controller
 
 	    $edit->add('section_id','Section <i class="fa fa-asterisk text-danger"></i>','select')
 			 ->options([''=>"Select Department"])
-			 ->attributes(['data-target'=>'line_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
 
 		$edit->add('line_id','Line <i class="fa fa-asterisk text-danger"></i>','select')
 			 ->options([''=>"Select Department"]);
