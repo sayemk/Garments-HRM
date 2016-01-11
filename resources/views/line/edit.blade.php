@@ -38,6 +38,18 @@
 	                    <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('branch_id') !!}
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('department_id') !!}
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
 	                        {!! $edit->render('section_id') !!}
 	                      </div>
 	                    </div>

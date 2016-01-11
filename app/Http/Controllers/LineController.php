@@ -147,11 +147,20 @@ class LineController extends Controller
     {
 
        $edit = \DataEdit::source(new line());
-        $edit->link("name","Name", "TR",['class' =>'btn btn-primary'])->back();
+        $edit->link("line","Lines", "TR",['class' =>'btn btn-primary'])->back();
+       $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+             ->options([''=>'Select Branch'])
+             ->options(Branch::lists("name", "id")->all())
+             ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+             ->options([''=>"Select Department"])
+             ->options(Department::lists('name','id')->all())
+             ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+
         $edit->add('section_id','Section <i class="fa fa-asterisk text-danger"></i>','select')
-                ->options(Section::lists("name", "id")->all())
-                 ->options([''=>"--Select--"])
-                ->rule('required|exists:section,id');
+             ->options([''=>"Select Department"])
+             ->options(Section::lists('name','id')->all());
         $edit->add('name','Line Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
 
         $edit->add('description','Description', 'textarea');
@@ -182,5 +191,10 @@ class LineController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getLists($branch_id)    
+    {
+        return Line::where(['section_id'=>$branch_id])->get();
     }
 }
