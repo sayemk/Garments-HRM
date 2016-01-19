@@ -85,6 +85,40 @@ function populateSelect (event) {
 	});
 }
 
+function setDesignation(event) {
+	var url = '/designation/json/'+$(event).val();
+	var target ='designations';
+	console.log(target);
+	$("#"+target).html('');
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'JSON',
+		
+	})
+	.done(function(response) {
+		console.log(response);
+		var optionText = '--Select--';
+   		var o = new Option(optionText); 
+   		$(o).html(optionText);
+		$("#"+target).append(o);
+
+		$.each(response, function(index, el) {
+   			//console.log(el);
+   			var optionText = el.name;
+   			var o = new Option(optionText, el.id); 
+			$(o).html(optionText);
+			$("#"+target).append(o);
+
+			
+   		});
+		
+	})
+	.fail(function(response) {
+		console.log(response);
+	});
+}
+
 
 // jQuery(document).ready(function($) {
 // 	setInterval(getTask, 10000);

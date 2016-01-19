@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+
 class DesignationTableSeeder extends Seeder
 {
     /**
@@ -11,15 +11,17 @@ class DesignationTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
+       $faker = \Faker\Factory::create();
     	
         foreach (range(1,10) as $value) {
         	DB::table('designations')->insert([
 	            'name' => $faker->name(),
+                'department_id' => $faker->numberBetween(1,64),
 	            'description' => $faker->text(),
 	            'created_at' => $faker->dateTime('now'),
 	            'updated_at' => $faker->dateTime('now'),
 	        ]);
         }
+
     }
 }

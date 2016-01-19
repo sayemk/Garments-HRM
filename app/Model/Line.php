@@ -16,4 +16,9 @@ class Line extends Model
     {
     	return $this->belongsToMany("App\Model\Employee");
     }
+
+     public function designations()
+    {
+    	return $this->belongsToMany("App\Model\Designation");
+    }
 }

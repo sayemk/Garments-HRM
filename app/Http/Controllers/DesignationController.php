@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Model\Designation;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Model\Branch;
+use App\Model\Designation;
+use App\Model\Department;
+use Illuminate\Http\Request;
 
 class DesignationController extends Controller
 {
@@ -17,7 +19,9 @@ class DesignationController extends Controller
     public function index()
     {
        
-        $grid = \DataGrid::source("designations");
+        //$grid = \DataGrid::source("designations");
+        $grid = \DataGrid::source(designation::with('department'));
+
 
         $grid->add('id','S_No', true)->cell(function($value, $row){
             $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
@@ -26,9 +30,13 @@ class DesignationController extends Controller
             ++$serialStart; 
             return ($pageNumber-1)*10 +$serialStart;
 
-
         });
-        $grid->add('name','Designation Name',true); 
+
+        $grid->add('{{ $department->branch->name }}','Branch','branch_id');
+        $grid->add('{{ $department->name }}','Department','department_id');
+        
+
+        $grid->add('name',' Name',true); 
        
        
         $grid->add('description','Description'); 
@@ -85,13 +93,24 @@ class DesignationController extends Controller
     {
         $edit = \DataEdit::source(new Designation());
         $edit->link("designation","Designation", "TR",['class' =>'btn btn-primary'])->back();
+
+        $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+             ->options([''=>'Select Branch'])
+             ->options(Branch::lists("name", "id")->all())
+             ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+             ->options([''=>"Select Department"])
+             ->options(Department::lists('name','id')->all())
+             ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+
+        
         $edit->add('name','Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
 
         $edit->add('description','Description', 'redactor');
        
         $edit->build();
         return $edit->view('designation.edit', compact('edit')); 
-
 
     }
     
@@ -117,5 +136,10 @@ class DesignationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getLists($department_id)
+    {
+        return Designation::where('department_id',$department_id)->get();
     }
 }

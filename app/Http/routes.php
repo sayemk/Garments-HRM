@@ -25,6 +25,7 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/designation', 'DesignationController@index');
     Route::any('/designation/edit', 'DesignationController@edit');
+    Route::get('/designation/json/{department_id}','DesignationController@getLists')->where('id', '[0-9]+');
 
     Route::get('/section', 'SectionController@index');
     Route::any('/section/edit', 'SectionController@edit');

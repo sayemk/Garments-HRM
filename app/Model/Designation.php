@@ -8,6 +8,11 @@ class Designation extends Model
 {
     
     protected $table = "designations";
+
+    public function department()
+    {
+    	return $this->belongsTo("App\Model\Department");
+    }
     
     public function employees()
     {
