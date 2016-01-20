@@ -18,4 +18,9 @@ class Designation extends Model
     {
     	return $this->belongsToMany("App\Model\Employee","employee_designation");
     }
+
+    public function grade()
+    {
+    	return $this->hasMany("App\Model\Grade");
+    }
 }

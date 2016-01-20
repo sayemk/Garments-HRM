@@ -31,6 +31,9 @@
           <li class="@if($active == 'designation') active @endif">
             <a href="{{ url('designation') }}"><i class="fa fa-circle-o"></i>Designation</a>
           </li>
+          <li class="@if($active == 'grade') active @endif">
+            <a href="{{ url('grade') }}"><i class="fa fa-circle-o"></i>Grade</a>
+          </li>
         </ul>
       </li>
 

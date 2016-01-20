@@ -77,15 +77,15 @@ class SectionController extends Controller
         $section = Section::find(\Input::get('modify'));
         $section = (!empty($section->branch_id)) ? $section->branch_id : 0;
 
-        $departments =Department::where('branch_id', $section)->lists("name", "id");
+        $departments =Department::where('branch_id', $section)->lists("name", "id")->all();
         
         $edit = \DataEdit::source(new Section());
         $edit->link("section","Section", "TR",['class' =>'btn btn-primary'])->back();
         $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
                 ->options([''=>"--Select--"])
-                ->options(Branch::lists("name", "id"))
+                ->options(Branch::lists("name", "id")->all())
                 ->rule('required|exists:branches,id')
-                 ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+                ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
         $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
             ->options([''=>"--Select--"])

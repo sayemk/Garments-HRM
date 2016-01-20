@@ -20,7 +20,41 @@ class DesignationController extends Controller
     {
        
         //$grid = \DataGrid::source("designations");
-        $grid = \DataGrid::source(designation::with('department'));
+        //$grid = \DataGrid::source(designation::with('department.branch'));
+
+        $filter = \DataFilter::source(designation::with('department.branch'));
+
+        $filter->add('department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
+                    ->scope(function($query){
+                        if (!empty(\Input::get('department_branch_name'))) {
+                            $branch = Branch::where(['id'=>\Input::get('department_branch_name')])->with('departments')->get();
+                            $departments = array_pluck($branch[0]->departments->toArray(), 'id');
+                            return $query->whereIn('department_id',$departments);
+                        } else {
+                           return $query; 
+                        }
+                        
+
+                    })
+                    ->attributes(['data-target'=>'department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $filter->add('department.name','Department','select')
+            ->options([''=>"--Select--"])
+            ->options(Department::where('branch_id', \Input::get('department_branch_name'))->lists("name", "id"))
+            ->scope(function($query){
+                if (!empty(\Input::get('department_name')) && trim(\Input::get('department_name')) !="--Select--") {
+
+                   return $query->where('department_id',\Input::get('department_name'));
+
+                }else{
+                    return $query;
+                }
+            });
+        $filter->submit('search');
+        $filter->reset('reset');
+        $filter->build();
+
+        $grid = \DataGrid::source($filter);
 
 
         $grid->add('id','S_No', true)->cell(function($value, $row){
@@ -40,14 +74,15 @@ class DesignationController extends Controller
        
        
         $grid->add('description','Description'); 
-        $grid->edit('designation/edit', 'Edit','show|modify|delete');
         $grid->link('designation/edit',"New Designation", "TR",['class' =>'btn btn-success']);
+        $grid->edit('designation/edit', 'Edit','modify|delete');
+        
         $grid->orderBy('id','ASC');
         
         $grid->paginate(10);
 
 
-        return  view('designation.index', compact('grid'));
+        return  view('designation.index', compact('grid','filter'));
     }
 
     /**

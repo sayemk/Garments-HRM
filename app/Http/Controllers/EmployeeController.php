@@ -163,11 +163,11 @@ class EmployeeController extends Controller
 			 ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this);setDesignation(this)"]);
 
 	    $edit->add('section_id','Section <i class="fa fa-asterisk text-danger"></i>','select')
-			 ->options([''=>"Select Department"])
+			 ->options([''=>"Select Section"])
 			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
 
 		$edit->add('line_id','Line <i class="fa fa-asterisk text-danger"></i>','select')
-			 ->options([''=>"Select Department"]);
+			 ->options([''=>"Select Line"]);
 
         $edit->link("employee","Employee", "TR",['class' =>'btn btn-primary'])->back();
         $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');

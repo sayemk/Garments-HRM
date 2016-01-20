@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Department')
+@section('title','Grade')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'department','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'Grade','parent_menu'=>'setting'])
 
 @endsection
 
@@ -12,7 +12,7 @@
          
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Designation</h3>
+              <h3 class="box-title padding-left">Grade </h3>
            
               <div class="box-body">
                 
@@ -23,31 +23,35 @@
 	                  {!! $edit->message !!}	                 
 	                  {!! $edit->header !!}
 
+	                 <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('branch_id') !!}
+	                      </div>
+	                    </div>
+	                  
+	                  <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('department_id') !!}
+	                      </div>
+	                    </div>
+
 
 	                  <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
-	                       {!! $edit->render('branch_id') !!}
+	                        {!! $edit->render('designation_id') !!}
 	                      </div>
 	                    </div>
-	                     <div class="form-group">
-	                     
-	                      <div class="col-sm-offset-2 col-sm-12">
-	                       {!! $edit->render('department_id') !!}
-	                      </div>
-	                    </div>
+	                    
 	                    <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
 	                        {!! $edit->render('name') !!}
 	                      </div>
 	                    </div>
-	                    <div class="form-group">
-	                      
-	                      <div class=" col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('description') !!}
-	                      </div>
-	                    </div>
+	                    
 	                     	                                        
 	                    <div class="form-group">
 	                      <div class="col-sm-offset-2 col-sm-9">
@@ -80,9 +84,16 @@
                 required: true,
             },
             description: {
-               required: true,
+               required: false
             },
-            
+            branch_id: {
+            	required: true,
+            	number:true
+            }
+            department_id: {
+            	required: true,
+            	number:true
+            }
 
         },
 

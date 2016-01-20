@@ -39,6 +39,10 @@ Route::group(['middleware' => 'acl'], function () {
     Route::any('/line/edit', 'LineController@edit');
     Route::get('/line/json/{section_id}','LineController@getLists')->where('id', '[0-9]+');
 
+
+    Route::get('/grade/', 'GradeController@index');
+    Route::any('/grade/edit', 'GradeController@edit');
+
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
