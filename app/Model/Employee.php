@@ -31,4 +31,15 @@ class Employee extends Model
     {
     	return $this->hasMany("App\Model\Experience");
     }
+
+    public function leave()
+    {
+        return $this->hasMany("App\Model\Leave");
+    }
+
+     public function leaveEmployees()
+    {
+        return $this->hasMany("App\Model\leaveEmployees");
+    }
+
 }

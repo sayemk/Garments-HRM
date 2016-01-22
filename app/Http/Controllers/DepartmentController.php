@@ -51,6 +51,7 @@ class DepartmentController extends Controller
         $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
                 ->options(Branch::lists("name", "id")->all())
                 ->rule('required|exists:branches,id');
+                
         $edit->add('name','Department Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
 
         $edit->add('description','Description', 'textarea');
@@ -65,4 +66,5 @@ class DepartmentController extends Controller
     {
     	return Department::where(['branch_id'=>$branch_id])->get();
     }
+
 }

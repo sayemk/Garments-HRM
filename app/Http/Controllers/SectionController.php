@@ -53,7 +53,6 @@ class SectionController extends Controller
             ++$serialStart; 
             return ($pageNumber-1)*config('hrm.pagination_per_page', 15) +$serialStart;
 
-
         });
         $grid->add('name','Section Name',true); 
        
@@ -75,12 +74,14 @@ class SectionController extends Controller
     {
         
         $section = Section::find(\Input::get('modify'));
+
         $section = (!empty($section->branch_id)) ? $section->branch_id : 0;
 
         $departments =Department::where('branch_id', $section)->lists("name", "id")->all();
         
         $edit = \DataEdit::source(new Section());
         $edit->link("section","Section", "TR",['class' =>'btn btn-primary'])->back();
+
         $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
                 ->options([''=>"--Select--"])
                 ->options(Branch::lists("name", "id")->all())
@@ -100,6 +101,7 @@ class SectionController extends Controller
         return $edit->view('section.edit', compact('edit')); 
 
     }
+    
     public function getLists($department_id)   
     {
         return Section::where(['department_id'=>$department_id])->get();

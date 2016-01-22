@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','Section')
+@section('title','Line')
 @section('sidebar')
 
    @include('layouts.sidebar',['active' =>'section','parent_menu'=>'setting'])
@@ -12,7 +12,7 @@
          
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Section </h3>
+              <h3 class="box-title padding-left">Line </h3>
            
               <div class="box-body">
                 

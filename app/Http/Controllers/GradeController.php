@@ -20,7 +20,44 @@ class GradeController extends Controller
     public function index()
     {
         //
-        $grid = \DataGrid::source(Grade::with('designation'));
+        //$grid = \DataGrid::source(Grade::with('designation'));
+
+        $filter = \DataFilter::source(grade::with('designation.department.branch'));
+
+        $filter->add('designation.department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
+                    ->scope(function($query){
+                        if (!empty(\Input::get('department_branch_name'))) {
+                            $branch = Branch::where(['id'=>\Input::get('designation_department_branch_name')])->with('departments')->get();
+                            $departments = array_pluck($branch[0]->departments->toArray(), 'id');
+                            return $query->whereIn('department_id',$departments);
+                        } else {
+                           return $query; 
+                        }
+                        
+
+                    })
+                    ->attributes(['data-target'=>'designation_department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $filter->add('designation.department.name','Department','select')
+            ->options([''=>"--Select--"])
+            ->options(Department::where('branch_id', \Input::get('designation.department_branch_name'))->lists("name", "id"))
+            ->scope(function($query){
+                if (!empty(\Input::get('designation_department_name')) && trim(\Input::get('designation_department_name')) !="--Select--") {
+
+                   return $query->where('_department_id',\Input::get('department_name'));
+
+                }else{
+                    return $query;
+                }
+            });
+
+            
+        $filter->submit('search');
+        $filter->reset('reset');
+        $filter->build();
+
+        $grid = \DataGrid::source($filter);
+
 
         $grid->add('id','S_No', true)->cell(function($value, $row){
             $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
@@ -29,8 +66,18 @@ class GradeController extends Controller
             ++$serialStart; 
             return ($pageNumber-1)*10 +$serialStart;
 
+        });
+
+
+        $grid->add('id','S_No', true)->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart; 
+            return ($pageNumber-1)*10 +$serialStart;
 
         });
+
         $grid->add('{{ $designation->department->branch->name }}','Branch','branch_id');
         $grid->add('{{ $designation->department->name }}','Department','department_id');
         $grid->add('{{ $designation->name }}','Designation','designation_id');
@@ -43,7 +90,7 @@ class GradeController extends Controller
         $grid->paginate(10);
 
 
-        return  view('grade.index', compact('grid'));
+        return  view('grade.index', compact('grid','filter'));
     }
 
     /**
