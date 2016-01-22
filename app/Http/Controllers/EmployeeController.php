@@ -8,6 +8,7 @@ use App\Model\Branch;
 use App\Model\Department;
 use App\Model\Designation;
 use App\Model\Employee;
+use App\Model\Grade;
 use App\Model\Line;
 use App\Model\Section;
 use Illuminate\Http\Request;
@@ -124,7 +125,11 @@ class EmployeeController extends Controller
         
         $grid->add('employee_id','Employee ID',true);
         $grid->add('image','Image')->cell(function($value,$row){
-        	return '<img class="img-circle" scr="'.url("uploads/images/employees").'/'.$value.'">' ;
+        	if(preg_match('/^http/', $value)){
+                return '<img alt="employee Photo" class="attachment-img img-responsive" style="width:120px; height:90px" src="'.url("uploads/images/employees/dummyPortrait.png").'">' ;
+            }else {
+                return '<img alt="employee Photo" class="attachment-img img-responsive" style="width:120px; height:90px" src="'.url("uploads/images/employees").'/'.$value.'">' ;
+            }
         });
         $grid->add('name','Employee Name',true); 
         $grid->add('{{  implode(", ", $designations->lists("name")->all()) }}','Designation',true);
@@ -160,19 +165,30 @@ class EmployeeController extends Controller
         
         $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
 			 ->options([''=>"Select Department"])
+             ->options(Department::lists("name", "id")->all())
 			 ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this);setDesignation(this)"]);
 
 	    $edit->add('section_id','Section <i class="fa fa-asterisk text-danger"></i>','select')
 			 ->options([''=>"Select Section"])
+             ->options(Section::lists("name", "id")->all())
 			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
 
 		$edit->add('line_id','Line <i class="fa fa-asterisk text-danger"></i>','select')
-			 ->options([''=>"Select Line"]);
+			 ->options([''=>"Select Line"])
+             ->options(Line::lists("name", "id")->all());
 
         $edit->link("employee","Employee", "TR",['class' =>'btn btn-primary'])->back();
         $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         $edit->add('name','Full Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-        $edit->add('designations','Designations','select')->options([''=>'Select Desination'])->options(Designation::lists('name','id'));
+        $edit->add('designations','Designations','select')
+             ->options([''=>'Select Grade'])
+             ->options(Designation::lists('name','id')->all())
+             ->attributes(['data-target'=>'grade','data-source'=>url('/grade/json'), 'onchange'=>"populateSelect(this)"]);
+
+        $edit->add('grade','Grade','select')
+             ->options([''=>'Select Grade'])
+             ->options(Grade::lists('name','id')->all());
+
         $edit->add('gender','Gender <i class="fa fa-asterisk text-danger"></i>','select')->options(['1'=>'Male','2'=>'Female'])->rule('required');
         $edit->add('dob','Date Of Birth <i class="fa fa-asterisk text-danger"></i>','date')->format('d/m/Y', 'en')->rule('required');
         $edit->add('father_name','Father\'s Name <i class="fa fa-asterisk text-danger"></i>','text')->rule('required');

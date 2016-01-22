@@ -42,4 +42,9 @@ class Employee extends Model
         return $this->hasMany("App\Model\leaveEmployees");
     }
 
+    public function grade()
+    {
+        return $this->belongsTo('App\Model\Grade');
+    }
+
 }

@@ -147,9 +147,9 @@ class GradeController extends Controller
              ->attributes(['data-target'=>'designation_id','data-source'=>url('/designation/json'), 'onchange'=>"populateSelect(this)"]);
 
 
-             $edit->add('designation_id','Designation <i class="fa fa-asterisk text-danger"></i>','select')
-             ->options([''=>"Select Designation"]);
-
+        $edit->add('designation_id','Designation <i class="fa fa-asterisk text-danger"></i>','select')
+             ->options([''=>"Select Designation"])
+             ->options(Designation::lists('name','id')->all());
         $edit->add('name','Grade <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         $edit->build();
         return $edit->view('grade.edit', compact('edit')); 
