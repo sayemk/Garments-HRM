@@ -193,7 +193,7 @@ class EmployeeController extends Controller
         $edit->add('dob','Date Of Birth <i class="fa fa-asterisk text-danger"></i>','date')->format('d/m/Y', 'en')->rule('required');
         $edit->add('father_name','Father\'s Name <i class="fa fa-asterisk text-danger"></i>','text')->rule('required');
         $edit->add('present_address','Present Adress <i class="fa fa-asterisk text-danger"></i>','textarea')->attributes(['rows'=>3])->rule('required');
-        $edit->add('permanent_address','Permanent Adress','textarea')->attributes(['rows'=>3])->rule('required');
+        $edit->add('permanent_address','Permanent Adress <i class="fa fa-asterisk text-danger"></i>','textarea')->attributes(['rows'=>3])->rule('required');
         $edit->add('primary_phone','Primary Phone <i class="fa fa-asterisk text-danger"></i>','text')->rule('required');
         $edit->add('secondary_phone','Secondary Phone','text');
         $edit->add('national_id','National ID','text');

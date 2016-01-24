@@ -90,7 +90,7 @@ class GradeController extends Controller
         $grid->paginate(10);
 
 
-        return  view('grade.index', compact('grid','filter'));
+        return  view('grade.index', compact('grid'));
     }
 
     /**

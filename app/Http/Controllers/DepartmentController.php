@@ -27,12 +27,10 @@ class DepartmentController extends Controller
             static $serialStart =0;
             ++$serialStart; 
             return ($pageNumber-1)*10 +$serialStart;
-
-
         });
-        $grid->add('name','Department Name',true); 
-       
+        
         $grid->add('{{ $branch->name }}','Branch','branch_id');
+        $grid->add('name','Department Name',true); 
         $grid->add('description','Description'); 
         $grid->edit('department/edit', 'Edit','show|modify|delete')->style('width:10%');
         $grid->link('department/edit',"New Department", "TR",['class' =>'btn btn-success']);

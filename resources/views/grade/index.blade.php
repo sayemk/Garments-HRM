@@ -15,7 +15,6 @@
       <h3 class="box-title padding-left">Grade </h3>
    
       <div class="box-body">
-         {!! $filter !!}
          	{!! $grid !!}
       </div>
                 
