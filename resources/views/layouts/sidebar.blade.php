@@ -48,8 +48,8 @@
         </a>
         <ul class="  treeview-menu">
           
-          <li class="@if($active == 'leave_type') active @endif">
-            <a href="{{ url('leave_type') }}"><i class="fa fa-circle-o"></i>Leaves Type</a>
+          <li class="@if($active == 'leavetype') active @endif">
+            <a href="{{ url('leavetype') }}"><i class="fa fa-circle-o"></i>Leaves Type</a>
           </li>
          
           <li class="@if($active == 'branch') active @endif">

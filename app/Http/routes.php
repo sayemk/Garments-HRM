@@ -43,6 +43,10 @@ Route::group(['middleware' => 'acl'], function () {
     Route::get('/grade/', 'GradeController@index');
     Route::any('/grade/edit', 'GradeController@edit');
     Route::get('/grade/json/{designation_id}','GradeController@getLists')->where('id', '[0-9]+');
+
+    Route::get('/leavetype', 'LeaveTypeController@index');
+    Route::any('/leavetype/edit', 'LeaveTypeController@edit');
+    Route::get('/leavetype/json/{leavetype_id}','LeaveTypeController@getLists')->where('id', '[0-9]+');
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
