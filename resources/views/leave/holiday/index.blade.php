@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Leave Type')
+@section('title','Holidays')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'leavetype','parent_menu'=>'leave'])
+   @include('layouts.sidebar',['active' =>'holiday','parent_menu'=>'leave'])
 
 @endsection
 
@@ -12,10 +12,11 @@
          
   <div class="box box-primary">
             
-      <h3 class="box-title padding-left">Leave Type </h3>
+      <h3 class="box-title padding-left">Holidays </h3>
            
       <div class="box-body">
-				{!! $grid !!}
+				{!! $filter !!}
+        {!! $grid !!}
        </div>
                 
                 

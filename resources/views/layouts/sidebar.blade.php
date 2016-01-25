@@ -55,8 +55,8 @@
           <li class="@if($active == 'branch') active @endif">
             <a href="{{ url('holiday') }}"><i class="fa fa-circle-o"></i>Holidays</a>
           </li>
-          <li class="@if($active == 'department') active @endif">
-            <a href="{{ url('department') }}"><i class="fa fa-circle-o"></i>Employee Leave</a>
+          <li class="@if($active == 'leaveemployee') active @endif">
+            <a href="{{ url('leaveemployee') }}"><i class="fa fa-circle-o"></i>Employee Leave</a>
           </li>
          
         </ul>
