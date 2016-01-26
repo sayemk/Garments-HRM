@@ -46,7 +46,7 @@
           <i class="fa fa-sticky-note"></i> <span>Leaves </span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
-        <ul class="  treeview-menu">
+        <ul class="treeview-menu">
           
           <li class="@if($active == 'leavetype') active @endif">
             <a href="{{ url('leavetype') }}"><i class="fa fa-circle-o"></i>Leaves Type</a>
@@ -61,9 +61,27 @@
          
         </ul>
       </li> 
+
+
+      <li class=" @if($parent_menu == 'attendance') active @endif treeview">
+        <a href="#">
+          <i class="fa fa-signal"></i> <span>Attendance </span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="  treeview-menu">
+          
+          <li class="@if($active == 'attendance') active @endif">
+            <a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i>Attendance</a>
+          </li>
+
+           <li class="@if($active == 'setting') active @endif">
+            <a href="{{ url('setting') }}"><i class="fa fa-circle-o"></i>Setting</a>
+          </li>
          
           
-     
+        </ul>
+      </li>
+
     </ul>
   </section>
 <!-- /.sidebar -->
