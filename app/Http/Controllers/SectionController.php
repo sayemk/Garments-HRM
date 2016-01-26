@@ -24,7 +24,6 @@ class SectionController extends Controller
                            return $query; 
                         }
                         
-
                     })
                     ->attributes(['data-target'=>'department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
