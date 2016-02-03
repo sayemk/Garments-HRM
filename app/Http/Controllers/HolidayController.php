@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Model\Holiday;
+use App\Model\Setting;
 use Illuminate\Http\Request;
 
 class HolidayController extends Controller
@@ -53,7 +54,7 @@ class HolidayController extends Controller
         
 
         $grid->edit('holiday/edit', 'Action','show|modify');
-        $grid->link('holiday/edit',"New Holiday", "TR",['class' =>'btn btn-success']);
+        $grid->link('holiday/create',"New Holiday", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('year','DESC');
         
         $grid->paginate(10);
@@ -69,7 +70,8 @@ class HolidayController extends Controller
      */
     public function create()
     {
-        //
+        $leaveType = Holiday::leaveType();
+        return view('leave.holiday.create', compact('leaveType'));
     }
 
     /**
@@ -80,7 +82,28 @@ class HolidayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'leave_type' => 'required',
+            'year' => 'required|numeric',
+            'date' =>'required_if:leave_type,2'
+        ]);
+
+        if($request->leave_type=='1'){
+
+            $weekly_holiday = Setting::where('string','weekly_holiday')->get();
+
+            $days =  getDaysInaYear($request->year, $weekly_holiday[0]->value, 'Y-m-d','Asia/Dhaka');
+            $extra = ['name'=>'Weekend','year'=>$request->year,'type'=>$request->leave_type];
+
+            $holidays =[];
+
+            foreach ($days as $day) {
+                $holidays[] = array_merge($extra,$day);
+            }
+            Holiday::insert($holidays);
+            return $holidays;
+        }
+
     }
 
     /**

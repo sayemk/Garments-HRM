@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
 {
-    protected $table = 'holiays';
+    protected $table = 'holidays';
+
+    public static function leaveType()
+    {
+    	return [
+    		'1' =>'Weekly',
+    		'2' => 'Government'
+    	];	
+    }
 }

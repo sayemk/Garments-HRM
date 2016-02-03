@@ -1,71 +1,5 @@
 <?php 
 
-function magentCall(\GuzzleHttp\Client $client, $query = null)
-{
-	if (is_null($query)) {
-		return 0;
-	}
-	$response = $client->request('GET', $query, [
-            'headers' => [
-                'Accept'            => 'application/json',
-                'Authorization'     => 'Bearer '.env('MAGENTO_TOKEN')
-            ]
-
-        ]);
-	return json_decode($response->getBody()->getContents());
-}
-
-function getMagentoCategoryByID(\GuzzleHttp\Client $client, $query = null)
-{
-		
-	$category = magentCall($client, $query);
-
-	$generatedArray['id'] = $category->id;
-	$generatedArray['name'] = $category->name;
-	$generatedArray['parent_id'] = $category->parent_id;
-	$generatedArray['created_at'] = $category->created_at;
-	$generatedArray['updated_at'] = $category->updated_at;
-	$generatedArray['children'] = $category->children;
-
-	return $generatedArray;
-
-	
-}
-$GLOBALS['categories'] = [];
-function getMagentoCategories(\GuzzleHttp\Client $client, $query = null)
-{
-	//$categories[] = $categories;
-
-	$category = getMagentoCategoryByID($client, $query);
-	$GLOBALS['categories'][] = $category;
-	//echo "<pre>";
-	if (!is_null($category['children'])) {
-		$childrens = array_filter(explode(',',$category['children']));
-		 //print_r($category);
-		
-		 //exit('H');
-		if (!empty($childrens)) {
-			foreach ($childrens as $child) {
-				getMagentoCategories($client, 'categories/'.$child);
-			}
-		}
-	}
-
-	return $GLOBALS['categories'];
-}
-
-
-function getProductCustomAtribute(stdClass $product , $search)
-{
-	$customAttributes = $product->custom_attributes;
-	foreach ($customAttributes as $attribute) {
-		if (trim($attribute->attribute_code) == $search) {
-			return $attribute->value;
-		}
-	}
-	return false;
-}
-
 function checkPermission($resource)
 {
 	$user_permissions = \Auth::user()->role->permissions->keyBy('resource');
@@ -85,5 +19,19 @@ function getCountryName(\GuzzleHttp\Client $client, $countryCode)
 	$country = magentCall($client, 'directory/countries/'.$countryCode);
 
 	return $country->full_name_english;
+}
+
+function getDaysInaYear($year,$day ='Friday', $format, $timezone='Asia/Dhaka')
+{
+	$fridays = array();
+    $startDate = new DateTime("{$year}-01-01 $day", new DateTimezone($timezone));
+    $year++;
+    $endDate = new DateTime("{$year}-01-01", new DateTimezone($timezone));
+    $int = new DateInterval('P7D');
+    foreach(new DatePeriod($startDate, $int, $endDate) as $d) {
+        $fridays[]['date'] = $d->format($format);
+    }
+
+    return $fridays;
 }
 
