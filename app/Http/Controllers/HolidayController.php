@@ -18,8 +18,14 @@ class HolidayController extends Controller
     public function index()
     {
         //return LeaveEmployee::with('leaveType')->get();
-        $query = \DB::table('holidays');
-        $filter = \DataFilter::source($query);
+        //$query = \DB::table('holidays');
+        $filter = \DataFilter::source(Holiday::where(function($query){
+            if(!empty(\Input::get('year'))){
+                return $query->where('year', \Input::get('year'));
+            } else {
+                return $query->where('year', date('Y'));
+            }
+        }));
 
         $filter->add('year','Year','date')->format('Y');
         $filter->add('type','Type','select')
@@ -36,7 +42,7 @@ class HolidayController extends Controller
 
             static $serialStart =0;
             ++$serialStart; 
-            return ($pageNumber-1)*10 +$serialStart;
+            return ($pageNumber-1)*20 +$serialStart;
 
         });
         
@@ -53,11 +59,11 @@ class HolidayController extends Controller
         });
         
 
-        $grid->edit('holiday/edit', 'Action','show|modify');
+        $grid->edit('holiday/destroy', 'Action','delete');
         $grid->link('holiday/create',"New Holiday", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('year','DESC');
-        
-        $grid->paginate(10);
+
+        $grid->paginate(20);
 
 
         return  view('leave.holiday.index', compact('grid', 'filter'));
@@ -83,26 +89,60 @@ class HolidayController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'leave_type' => 'required',
+            'holiday_type' => 'required',
+            'name' => 'required|max:100',
             'year' => 'required|numeric',
-            'date' =>'required_if:leave_type,2'
+            'date' =>'required_if:holiday_type,2'
         ]);
 
-        if($request->leave_type=='1'){
+        if($request->holiday_type=='1'){
+
+            $weekly_holiday_year = Holiday::where(['year'=>$request->year, 'type' => $request->holiday_type])->count();
+           
+            if ($weekly_holiday_year) {
+                $request->session()->flash('system_message', 'The Weekend Holidays are already created for this year! '.$request->year);
+                return redirect('holiday/create')
+                          ->withInput();
+            }
 
             $weekly_holiday = Setting::where('string','weekly_holiday')->get();
 
             $days =  getDaysInaYear($request->year, $weekly_holiday[0]->value, 'Y-m-d','Asia/Dhaka');
-            $extra = ['name'=>'Weekend','year'=>$request->year,'type'=>$request->leave_type];
+            
+            $extra = ['name'=>$request->name,'year'=>$request->year,'type'=>$request->holiday_type];
 
             $holidays =[];
 
             foreach ($days as $day) {
                 $holidays[] = array_merge($extra,$day);
             }
+
+           // return $holidays;
             Holiday::insert($holidays);
-            return $holidays;
+
+            $request->session()->flash('system_message', 'The Weekend Holidays are created successfully for this year! '.$request->year);
+            
+        } else {
+
+            $holiday = new Holiday();
+            $holiday->name = $request->name;
+            $holiday->type = $request->holiday_type;
+            $holiday->year = $request->year;
+            $holiday->date =  $request->date;
+
+            if ($holiday->save()) {
+                $request->session()->flash('system_message', 'The Government Holiday is created successfully for this date! '.$request->date);
+            } else {
+                $request->session()->flash('system_message', 'Fail to create Government holiday! Please Try again.');
+            }
+            
         }
+
+        return redirect('holiday/create');
+
+
+
+
 
     }
 
@@ -117,16 +157,7 @@ class HolidayController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+   
 
     /**
      * Update the specified resource in storage.
@@ -146,8 +177,15 @@ class HolidayController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $holiday = Holiday::find($request->delete);
+        if($holiday->delete()){
+            $request->session()->flash('system_message', "Holiday Deleted Successfully");
+            return redirect('holiday');
+        } else {
+            $request->session()->flash('system_message', "Fail! to delete Holiday");
+            return redirect('holiday');
+        }
     }
 }

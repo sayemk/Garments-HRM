@@ -13,8 +13,9 @@
   <div class="box box-primary">
             
       <h3 class="box-title padding-left">Holidays </h3>
-           
+          
       <div class="box-body">
+         @include('layouts.system_message')
 				{!! $filter !!}
         {!! $grid !!}
        </div>

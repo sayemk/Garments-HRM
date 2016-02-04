@@ -22,9 +22,16 @@
 				{!! Form::open(array('url' => 'holiday', 'method' => 'POST','class' =>'form-horizontal')) !!}
 
           <div class="form-group">
-            <label for="faq_category" class="col-sm-3 control-label">Leave Type</label>
+            <label for="faq_category" class="col-sm-3 control-label">Holiday Type</label>
             <div class="col-sm-9">
-              {!! Form::select('leave_type', $leaveType, old('leave_type'), ['class'=>'form-control', 'id' => 'leave_type']) !!}
+              {!! Form::select('holiday_type', $leaveType, old('holiday_type'), ['class'=>'form-control', 'id' => 'holiday_type']) !!}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="faq_category" class="col-sm-3 control-label">Name</label>
+            <div class="col-sm-9">
+              <input type="text"  name="name" class="form-control" placeholder="Reason for holiday">
             </div>
           </div>
 
@@ -34,6 +41,7 @@
               <input type="text" id="holidayYear" name="year" class="form-control"  data-mask="">
             </div>
           </div>
+
           <div class="form-group">
             <label for="faq_category" class="col-sm-3 control-label">Date/Day</label>
             <div class="col-sm-9">
