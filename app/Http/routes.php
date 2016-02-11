@@ -51,7 +51,7 @@ Route::group(['middleware' => 'acl'], function () {
     Route::get('/leaveemployee', 'EmployeeLeaveController@index');
     Route::any('/leaveemployee/edit', 'EmployeeLeaveController@edit');
     Route::get('/leaveemployee/json/{leavetype_id}','EmployeeLeaveController@getLists')->where('id', '[0-9]+');
-
+    Route::resource('/leaveapplication','LeaveController');
     Route::get('/holiday/destroy', 'HolidayController@destroy');
     Route::resource('/holiday', 'HolidayController');
     // Registration routes...

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Model\Leave;
+use Illuminate\Http\Request;
 
 class LeaveController extends Controller
 {
@@ -16,7 +16,24 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        //
+        $leaves = Leave::with(['employee'=>function($query){
+                if (!empty(\Input::get('employee'))) {
+                   
+                    return $query->where('employee_id', \Input::get('employee'));
+                }
+                return $query;
+            }])
+            ->where(function($query){
+                if (!empty(\Input::get('year'))) {
+                    return $query->where('year', \Input::get('year'));
+                }
+                return $query;
+            })
+            ->paginate(10);
+
+        //return $leaves;
+
+        return view('leave.application.index',compact('leaves'));
     }
 
     /**

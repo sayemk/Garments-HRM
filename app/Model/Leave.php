@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Leave extends Model
 {
     //
-	public function employees()
+	public function employee()
     {
-    	return $this->belongsTo("App\Model\Employees");
+    	return $this->belongsTo("App\Model\Employee");
     }
 
-    public function leaveType()
+    public function leaveDetails()
     {
-    	return $this->belongsTo("App\Model\LeaveType");
+    	return $this->belongsTo("App\Model\LeaveDetail");
     }
 
 }
