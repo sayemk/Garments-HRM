@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Leave Allocation')
+@section('title','Leave Application')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'leaveemployee','parent_menu'=>'leave'])
+   @include('layouts.sidebar',['active' =>'leaveapplication','parent_menu'=>'leave'])
 
 @endsection
 
@@ -12,11 +12,12 @@
          
   <div class="box box-primary">
             
-      <h3 class="box-title padding-left">Leave Allocation </h3>
+      <h3 class="box-title padding-left">Leave Application </h3>
            
       <div class="box-body">
-				
-        
+
+          {!! $filter !!}
+          {!! $grid !!}
        </div>
                 
                 

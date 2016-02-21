@@ -14,7 +14,7 @@ class Leave extends Model
 
     public function leaveDetails()
     {
-    	return $this->belongsTo("App\Model\LeaveDetail");
+    	return $this->hasMany('App\Model\LeaveDetail','leave_id','id');
     }
 
 }
