@@ -65,16 +65,16 @@ class EmployeeLeaveController extends Controller
         $edit = \DataEdit::source(new LeaveEmployee());
         $edit->link("leaveemployee","Employee Leave", "TR",['class' =>'btn btn-primary'])->back();
         
-        $edit->add('employee.employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>','autocomplete')
+        $edit->add('employee.employee_id','Employee ID <span class="text-danger">*</span>','autocomplete')
                 ->search(array('employee_id'))
                 ->rule('required|exists:employees,id');
-        $edit->add('leavetype_id','Leave Type <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('leavetype_id','Leave Type <span class="text-danger">*</span>','select')
              ->options([''=>'Selet Type'])   
              ->options(LeaveType::lists('name','id')->all())
              ->rule('required|exists:leave_types,id');
-        $edit->add('leave_day','Leave Days <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required|numeric');
+        $edit->add('leave_day','Leave Days <span class="text-danger">*</span>', 'text')->rule('required|numeric');
 
-        $edit->add('year','Year <i class="fa fa-asterisk text-danger"></i>', 'date')->format('Y')->rule('required');
+        $edit->add('year','Year <span class="text-danger">*</span>', 'date')->format('Y')->rule('required');
         
         $edit->build();
 

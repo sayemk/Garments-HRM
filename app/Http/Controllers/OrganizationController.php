@@ -57,9 +57,9 @@ class OrganizationController extends Controller
 
         $edit = \DataEdit::source(new Organization());
         $edit->link("organization","Organization", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('name','Organization Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Organization Name <span class="text-danger">*</span>', 'text')->rule('required');
 
-        $edit->add('address','Address <i class="fa fa-asterisk text-danger"></i>', 'textarea')->rule('required');
+        $edit->add('address','Address <span class="text-danger">*</span>', 'textarea')->rule('required');
         
         $edit->build();
 

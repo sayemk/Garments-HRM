@@ -38,7 +38,6 @@ class DepartmentController extends Controller
         
         $grid->paginate(10);
 
-
         return  view('department.index', compact('grid','filter'));
     }
 
@@ -46,17 +45,16 @@ class DepartmentController extends Controller
     {
     	$edit = \DataEdit::source(new Department());
         $edit->link("department","Department", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
                 ->options(Branch::lists("name", "id")->all())
                 ->rule('required|exists:branches,id');
                 
-        $edit->add('name','Department Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Department Name <span class="text-danger">*</span>', 'text')->rule('required');
 
         $edit->add('description','Description', 'textarea');
        
         $edit->build();
         return $edit->view('department.edit', compact('edit')); 
-
 
     }
 

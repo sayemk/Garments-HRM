@@ -9,10 +9,17 @@
 
 @section('content')
   <!-- Info boxes -->
-         
+         <ul class="breadcrumb">
+    <li>
+        <i class="icon-home"></i>
+        <a href="index-2.html">Home</a>
+        <i class="icon-angle-right"></i>
+    </li>
+    <li><a href="#">Dashboard</a></li>
+</ul>
   <div class="box box-primary">
             
-      <h3 class="box-title padding-left">Leave Allocation </h3>
+      <h3 class="box-title padding-left">Leave Allocation</h3>
            
       <div class="box-body">
 				{!! $filter !!}

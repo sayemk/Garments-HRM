@@ -136,21 +136,21 @@ class GradeController extends Controller
         $edit = \DataEdit::source(new Grade());
         $edit->link("grade","grade", "TR",['class' =>'btn btn-primary'])->back();
 
-        $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
              ->options([''=>'Select Branch'])
              ->options(Branch::lists("name", "id")->all())
              ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
              ->options([''=>"Select Department"])
              ->options(Department::lists('name','id')->all())
              ->attributes(['data-target'=>'designation_id','data-source'=>url('/designation/json'), 'onchange'=>"populateSelect(this)"]);
 
 
-        $edit->add('designation_id','Designation <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('designation_id','Designation <span class="text-danger">*</span>','select')
              ->options([''=>"Select Designation"])
              ->options(Designation::lists('name','id')->all());
-        $edit->add('name','Grade <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Grade <span class="text-danger">*</span>', 'text')->rule('required');
         $edit->build();
         return $edit->view('grade.edit', compact('edit')); 
     }

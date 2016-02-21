@@ -48,7 +48,7 @@ class LeaveTypeController extends Controller
         $edit = \DataEdit::source(new LeaveType());
         $edit->link("leavetype","Leave Type", "TR",['class' =>'btn btn-primary'])->back();
         
-        $edit->add('name','Leave Type Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Leave Type Name <span class="text-danger">*</span>', 'text')->rule('required');
         
         $edit->build();
 

@@ -29,33 +29,30 @@ class BranchController extends Controller
             ++$serialStart; 
             return ($pageNumber-1)*10 +$serialStart;
 
-
         });
         $grid->add('name','Branch Name',true); 
-       
+
         $grid->add('{{ $organization->name }}','Oranization','organization_id');
         $grid->add('address','Adress'); 
         $grid->edit('branch/edit', 'Edit','show|modify|delete');
         $grid->link('branch/edit',"New Branch", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('name','ASC');
-        
-        $grid->paginate(10);
 
+        $grid->paginate(10);
 
         return  view('branch.index', compact('grid'));
     }
-
     public function edit()
     {
         
         $edit = \DataEdit::source(new Branch());
         $edit->link("branch","Branch", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('organization_id','Organization <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('organization_id','Organization <span class="text-danger">*</span> ','select')
                 ->options(Organization::lists("name", "id")->all())
                 ->rule('required|exists:organizations,id');
-        $edit->add('name','Branch Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Branch Name <span class="text-danger">*</span> ', 'text')->rule('required');
 
-        $edit->add('address','Address <i class="fa fa-asterisk text-danger"></i>', 'textarea')->rule('required');
+        $edit->add('address','Address <span class="text-danger">*</span> ', 'textarea')->rule('required');
         
         $edit->build();
 
