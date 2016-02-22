@@ -54,6 +54,7 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/leaveapplication','LeaveController@index');
     Route::get('/leaveapplication/create','LeaveController@create');
+    Route::post('/leaveapplication','LeaveController@store');
     Route::any('/leaveapplication/edit','LeaveController@edit');
     Route::get('/leave/summary/json/{employee_id}','LeaveController@summary')->where('id', '^EMP-[0-9]*');
 

@@ -16,13 +16,13 @@
 
     <div class="box-body">
         <div class="row">
-
+            {!! Form::open(array('url' => 'leaveapplication', 'method' => 'POST')) !!}
             <div class="col-sm-8">
 
                 @include('layouts.validationError')
                 @include('layouts.system_message')
 
-                {!! Form::open(array('url' => 'holiday', 'method' => 'POST')) !!}
+                
 
                 <div class="form-group">
                     <label for="faq_category" class="control-label">Employee ID</label>
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="faq_category" class="control-label">Employee Name</label>
 
-                    <input type="text"  name="employee_name" class="form-control" readonly>
+                    <input type="text" id="employee_name"  name="employee_name" class="form-control" readonly>
 
                 </div>
 
@@ -60,11 +60,13 @@
                 </div>
 
             </div>
-            <div class="col-sm-4"></div>
-        </div>
-        <div class="row">
+            {{-- Summary Report --}}
+            <div class="col-sm-4" id="leave_summary">
+                
+            </div>
+       
             <div class="col-sm-12">
-                <table  id="form-grid" class="table table-bordered">
+                <table   class="table table-bordered">
                     <thead>
                     <tr>
                         <th>Leave Type</th>
@@ -77,7 +79,7 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="form-grid">
                     <tr>
                         <td>
 
@@ -146,7 +148,7 @@
                 //Add new row
                 $(document).on('click', '#opp_add_new_row', function(event) {
                     var leave_type = $("#leave_type > option").clone();
-                    var str = '<tr>  <td> <select name="opp_products_cat[]" class="form-control">';
+                    var str = '<tr>  <td> <select name="leave_type[]" class="form-control">';
 
                     $.each(leave_type,function(index, el) {
                         str += el.outerHTML;
@@ -193,9 +195,22 @@
                     })
                     .done(function(response) {
                         console.log(response);
+                        if (response.status) {
+                            $('#employee_name').val(response.employee);
+                            var str = '<table class="table table-bordered"> <tr> <th>Leave Type</th> <th>Balance</th> </tr> ';
+
+                            $.each(response.summary, function(index, val) {
+                                  var balance = val.alocated - val.spent;
+                                  str += '<tr><td>'+val.leaveType+'</td><td>'+balance+'</td></tr>';
+                             }); 
+
+                            str +='</table>';
+                            $('#leave_summary').html(str);
+
+                        };
                     })
                     .fail(function(response) {
-                        console.log(response);
+                        swal("Whoops!", "Fail to load Summary Report", "info");
                     })
                     
                 });

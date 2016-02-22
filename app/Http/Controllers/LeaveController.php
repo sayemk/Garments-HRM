@@ -101,7 +101,20 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        echo '<pre>';
+//      print_r($_POST);
+//      dd();
+        $this->validate($request, [
+            'employee_id' => 'required|exists:employees,employee_id',
+            'start_date' => 'required|date_format:d/m/Y',
+            'end_date' => 'required|date_format:d/m/Y',
+            'total_day' =>'required|numeric',
+            'leave_type'=>'required|array',
+            'sub_start_date'=>'required|array',
+            'sub_end_date'=>'required|array',
+            'sub_total_days'=>'required|array',
+            'payable'=>'required|array',
+        ]);
     }
 
     /**
@@ -147,10 +160,11 @@ class LeaveController extends Controller
             $spentLeave = Leave::where([ 'year' => date('Y'),'employee_id'=>$employee[0]->id])->with(['leaveDetails'=>function($query) use($alocatedLeave){
                 return $query->where('leave_type_id',$alocatedLeave->leaveType->id);
             }])->get();
-            $summary[$alocatedLeave->leaveType->id] = $spentLeave[0]->leaveDetails->sum('days');
+            $summary[$alocatedLeave->leaveType->id] =['leaveType'=>$alocatedLeave->leaveType->name,'alocated'=>$alocatedLeave->leave_day,'spent'=>$spentLeave[0]->leaveDetails->sum('days')];
         }
 
-        return response()->json(['employe'=>$employee, 'summary'=>$summary]);
+
+        return response()->json(['status'=>1,'employee'=>$employee[0]->name, 'summary'=>$summary]);
 
 
     }
