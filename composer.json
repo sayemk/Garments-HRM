@@ -10,7 +10,8 @@
 	    "zofe/rapyd": "2.1.*",
         "laravelcollective/html": "5.1.*",
 	    "aginev/acl": "1.1.*",
-        "doctrine/dbal": "2.5.*"
+        "doctrine/dbal": "2.5.*",
+        "nesbot/carbon": "~1.18"
 	
     },
     "require-dev": {

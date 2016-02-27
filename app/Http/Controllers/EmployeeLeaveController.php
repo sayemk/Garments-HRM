@@ -21,7 +21,7 @@ class EmployeeLeaveController extends Controller
         //return LeaveEmployee::with('leaveType')->get();
         $filter = \DataFilter::source(LeaveEmployee::with('employee','leaveType'));
 
-        $filter->add('employee.employee_id','Employee','tags');
+        $filter->add('employee.employee_id','Employee Id','tags');
         $filter->add('year','Year','date')->format('Y');
         $filter->add('leavetype_id','Leave Type','select')
             ->options([''=>'Leave Type'])
@@ -40,15 +40,13 @@ class EmployeeLeaveController extends Controller
             ++$serialStart; 
             return ($pageNumber-1)*10 +$serialStart;
 
-
         });
         
+        $grid->add('{{ $employee->employee_id }}','Employee ID','employee_id',true);
         $grid->add('{{ $employee->name }}','Employee');    
-        $grid->add('{{ $employee->employee_id }}','Employee','employee_id',true);
         $grid->add('{{ $leaveType->name }}','Leave Type','leavetype_id');
         $grid->add('leave_day','Leave Days');
         $grid->add('year','Year');
-
         $grid->edit('leaveemployee/edit', 'Action','show|modify');
         $grid->link('leaveemployee/edit',"New Allocation", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('year','ASC');

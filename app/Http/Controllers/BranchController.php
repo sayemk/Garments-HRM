@@ -18,8 +18,6 @@ class BranchController extends Controller
      */
     public function index()
     {
-        
-
         $grid = \DataGrid::source(Branch::with('organization'));
 
         $grid->add('id','S_No', true)->cell(function($value, $row){
@@ -46,7 +44,7 @@ class BranchController extends Controller
     {
         
         $edit = \DataEdit::source(new Branch());
-        $edit->link("branch","Branch", "TR",['class' =>'btn btn-primary'])->back();
+        $edit->link("branch","Manage Branch", "TR",['class' =>'btn btn-primary','style'=>'margin-top:-52px;'])->back();
         $edit->add('organization_id','Organization <span class="text-danger">*</span> ','select')
                 ->options(Organization::lists("name", "id")->all())
                 ->rule('required|exists:organizations,id');

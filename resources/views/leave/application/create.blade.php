@@ -12,7 +12,7 @@
 
 <div class="box box-primary">
 
-    <h3 class="box-title padding-left">Leave Application </h3>
+    <h3 class="box-title padding-left"> Leave Application </h3>
 
     <div class="box-body">
         <div class="row">
@@ -23,7 +23,6 @@
                 @include('layouts.system_message')
 
                 
-
                 <div class="form-group">
                     <label for="faq_category" class="control-label">Employee ID</label>
 
@@ -157,7 +156,7 @@
 
                     str +='</select> </td><td> <input type="text" name="sub_start_date[]" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td> <td> <input type="text" name="sub_end_date[]" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td><td><input type="text" name="sub_total_days[]" class="form-control" placeholder=""></td>';
 
-                    str += '<td> <select name="opp_products_cat[]" class="form-control">';
+                    str += '<td> <select name="payable[]" class="form-control">';
                     var payable = $("#payable > option").clone();
                     $.each(payable,function(index, el) {
                         str += el.outerHTML;
@@ -174,7 +173,6 @@
                 });
                 //Remove row
                 $(document).on('click', '.opp_remove', function(event) {
-
 
                     if ($(event.target).closest('tr').siblings().length) {
                         $(event.target).closest('tr').remove();
@@ -206,7 +204,6 @@
 
                             str +='</table>';
                             $('#leave_summary').html(str);
-
                         };
                     })
                     .fail(function(response) {
@@ -214,9 +211,6 @@
                     })
                     
                 });
-
-
-
                 
         });
     </script>

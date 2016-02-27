@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Model\Employee;
 use App\Model\Leave;
+use App\Model\LeaveDetail;
 use App\Model\LeaveEmployee;
 use App\Model\LeaveType;
 use Illuminate\Http\Request;
 use Zofe\Rapyd\DataFilter\DataFilter;
 use Zofe\Rapyd\Facades\DataGrid;
+use Carbon\Carbon;
 
 class LeaveController extends Controller
 {
@@ -101,9 +103,7 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
-//        echo '<pre>';
-//      print_r($_POST);
-//      dd();
+
         $this->validate($request, [
             'employee_id' => 'required|exists:employees,employee_id',
             'start_date' => 'required|date_format:d/m/Y',
@@ -115,6 +115,39 @@ class LeaveController extends Controller
             'sub_total_days'=>'required|array',
             'payable'=>'required|array',
         ]);
+
+       Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y-m-d');
+
+        $leaveapplication = new Leave();
+
+        $employee = Employee::where('employee_id', $request->employee_id)->select(['id','name','employee_id'])->get();
+
+        $leaveapplication->employee_id = $employee[0]->id;
+        $leaveapplication->start_day =  Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y-m-d');
+        $leaveapplication->end_day = Carbon::createFromFormat('d/m/Y', $request->end_date)->toDateString('Y-m-d');
+
+        $start_day = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        $end_day = Carbon::createFromFormat('d/m/Y', $request->end_date);
+        $total_days = $end_day->diffInDays($start_day);
+
+
+        $leaveapplication->total_days = $total_days+1; //As diffInDays return 0 for same days
+
+        $leaveapplication->year = Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y');
+
+        $leaveapplication->save();
+
+        foreach($request->leave_type as $index => $type){
+            $leaveDetails = new LeaveDetail();
+            $leaveDetails->leave_id = $leaveapplication->id;
+            $leaveDetails->leave_type_id = $type;
+            $leaveDetails->days = $request->sub_total_days[$index];
+            $leaveDetails->start_day = Carbon::createFromFormat('d/m/Y', $request->sub_start_date[$index])->toDateString('Y-m-d');
+            $leaveDetails->end_day = Carbon::createFromFormat('d/m/Y', $request->sub_end_date[$index])->toDateString('Y-m-d');
+            $leaveDetails->payable = $request->payable[$index];
+            $leaveDetails->save();
+        }
+
     }
 
     /**
@@ -150,7 +183,7 @@ class LeaveController extends Controller
     {
         //
     }
-
+    
     public function summary($employee_id){
         $employee = Employee::where('employee_id',$employee_id)->with(['leaveEmployees'=>function($query){
             $query->where(['year'=>date('Y')])->with('leaveType');
@@ -162,10 +195,7 @@ class LeaveController extends Controller
             }])->get();
             $summary[$alocatedLeave->leaveType->id] =['leaveType'=>$alocatedLeave->leaveType->name,'alocated'=>$alocatedLeave->leave_day,'spent'=>$spentLeave[0]->leaveDetails->sum('days')];
         }
-
-
         return response()->json(['status'=>1,'employee'=>$employee[0]->name, 'summary'=>$summary]);
-
 
     }
 }

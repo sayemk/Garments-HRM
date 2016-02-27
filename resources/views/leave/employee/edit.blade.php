@@ -9,14 +9,6 @@
 
 @section('content')
   <!-- Info boxes -->
-		 <ul class="breadcrumb">
-		    <li>
-		        <i class="icon-home"></i>
-		        <a href="index-2.html">Home</a>
-		        <i class="icon-angle-right"></i>
-		    </li>
-		    <li><a href="#">Employee Leave Allocation</a></li>
-		</ul>
         	<div class="box box-primary">
             
               <h3 class="box-title padding-left">Employee Leave Allocation</h3>
