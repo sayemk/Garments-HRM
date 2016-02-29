@@ -154,7 +154,7 @@
                     });
 
 
-                    str +='</select> </td><td> <input type="text" name="sub_start_date[]" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td> <td> <input type="text" name="sub_end_date[]" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td><td><input type="text" name="sub_total_days[]" class="form-control" placeholder=""></td>';
+                    str +='</select> </td><td> <input type="text" name="sub_start_date[]" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td> <td> <input type="text" name="sub_end_date[]" onchange="getSubTotal(this)" class="form-control" placeholder="dd/mm/yyyy" data-inputmask="\'mask\': \'d/m/y\'"> </td><td><input type="text" name="sub_total_days[]" class="form-control" placeholder=""></td>';
 
                     str += '<td> <select name="payable[]" class="form-control">';
                     var payable = $("#payable > option").clone();
