@@ -16,7 +16,7 @@
 
     <div class="box-body">
         <div class="row">
-            {!! Form::open(array('url' => 'leaveapplication', 'method' => 'POST')) !!}
+            {!! Form::open(array('url' => 'leaveapplication', 'method' => 'POST', 'id'=>'leaveapplication')) !!}
             <div class="col-sm-8">
 
                 @include('layouts.validationError')
@@ -93,7 +93,7 @@
 
                         </td>
                         <td>
-                            <input type="text" name="sub_end_date[]" class="form-control" placeholder="dd/mm/yyyy"  data-inputmask="'mask': 'd/m/y'">
+                            <input type="text" name="sub_end_date[]" onchange="getSubTotal(this)" class="form-control" placeholder="dd/mm/yyyy"  data-inputmask="'mask': 'd/m/y'">
 
                         </td>
                         <td>
@@ -211,7 +211,66 @@
                     })
                     
                 });
+
+              //Count Total Days
+
+                $('#end_date').change(function(event) {
+                    var start_date = $('#start_date').val();
+                    var end_date = $('#end_date').val();
+                   
+                    if ($.trim(start_date).length >0 && $.trim(end_date).length > 0) {
+                        
+                        var total_day = getDateDiff(start_date,end_date, 'days') +1;
+
+                       $('#total_day').val(total_day);
+                        
+                    };
+                });
+
+                $('#leaveapplication').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        gender: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The gender is required'
+                                }
+                            }
+                        },
+                        'browsers[]': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Please specify at least one browser you use daily for development'
+                                }
+                            }
+                        },
+                        'editors[]': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The editor names are required'
+                                }
+                            }
+                        }
+                    }
+                });  
                 
         });
+
+        function getSubTotal (event) {
+           var end_date = ( $(event).val());
+           var start_date = $(event).parent().parent().children('td').children('input').eq(0).val();
+           if ($.trim(start_date).length >0 && $.trim(end_date).length > 0) {
+                        
+                var total_day = getDateDiff(start_date,end_date, 'days') +1;
+
+                $(event).parent().parent().children('td').children('input').eq(2).val(total_day);
+                
+            };
+        }
     </script>
 @endsection

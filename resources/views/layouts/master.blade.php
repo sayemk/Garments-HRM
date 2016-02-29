@@ -162,6 +162,8 @@
     <script src="{{ url('/assets/plugins/chartjs/Chart.min.js') }}"></script>
 
     <script src="{{ url('/assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <script src="{{ url('/assets/plugins/momentjs/moment.min.js') }}"></script>
     
     <!-- JQuery Form Validation -->
 
