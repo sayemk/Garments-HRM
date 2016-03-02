@@ -227,36 +227,31 @@
                     };
                 });
 
-                $('#leaveapplication').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        gender: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'The gender is required'
-                                }
-                            }
-                        },
-                        'browsers[]': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Please specify at least one browser you use daily for development'
-                                }
-                            }
-                        },
-                        'editors[]': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'The editor names are required'
-                                }
-                            }
-                        }
-                    }
+               
+                $('#leaveapplication').submit(function(event) {
+                    
+
+                    //Set global variable project value
+                    var total_day = $('#total_day').val();
+                        
+                    console.log(total_day)
+                    var sub_total_days = $('input[name="sub_total_days[]"]').map(function() {
+                                    return parseInt(this.value);
+                                }).get();
+                    console.log(budgets);
+
+                    var sub_total_day = 0;
+                    $.each(budgets, function(index, budget) {
+                        sub_total_day +=budget;
+                    });
+
+                    // console.log(totalBudget);
+                    if (sub_total_day==total_day) {
+                        return;
+                    } else{
+                        event.preventDefault();
+                        swal("Whoops!", "Total days and Sum of Sub total day should be equal!", "error");
+                    };
                 });  
                 
         });

@@ -13,6 +13,9 @@
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/home',function(){
+    return redirect('/organization');
+});
 
 Route::group(['middleware' => 'acl'], function () {
     Route::get('/organization/', 'OrganizationController@show');
@@ -55,7 +58,21 @@ Route::group(['middleware' => 'acl'], function () {
     Route::get('/leaveapplication','LeaveController@index');
     Route::get('/leaveapplication/create','LeaveController@create');
     Route::post('/leaveapplication','LeaveController@store');
-    Route::any('/leaveapplication/edit','LeaveController@edit');
+    Route::any('/leaveapplication/edit',function(){
+
+        $show = \Input::get('show');
+        if (!empty($show)) {
+           return \Redirect::action('LeaveController@show', array($show));
+        }
+
+        $modify = \Input::get('modify');
+        if (!empty($modify)) {
+           return \Redirect::action('LeaveController@edit', array($modify));
+        }
+        return redirect('/leaveapplication');
+    });
+    Route::get('/leaveapplication/{id}','LeaveController@show');
+    Route::get('/leaveapplication/{id}/edit','LeaveController@edit');
     Route::get('/leave/summary/json/{employee_id}','LeaveController@summary')->where('id', '^EMP-[0-9]*');
 
     Route::get('/holiday/destroy', 'HolidayController@destroy');
