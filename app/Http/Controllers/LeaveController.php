@@ -160,7 +160,8 @@ class LeaveController extends Controller
      */
     public function show($id)
     {
-        return $id;
+        $leaveapplication = Leave::findOrFail($id);
+        return view('leave.application.show',compact('leaveapplication'));
     }
 
     /**

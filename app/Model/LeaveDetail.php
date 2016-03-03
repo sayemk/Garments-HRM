@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class LeaveDetail extends Model
 {
     protected $table = 'leave_details';
+   
     public function leave()
     {
     	return $this->belongsTo('App\Model\Leave');
+    }
+
+    public function leaveType()
+    {
+    	return $this->belongsTo('App\Model\LeaveType','leave_type_id');
     }
 }

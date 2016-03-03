@@ -35,3 +35,7 @@ function getDaysInaYear($year,$day ='Friday', $format, $timezone='Asia/Dhaka')
     return $fridays;
 }
 
+function leavePayable($flag){
+	return ($flag) ? 'Yes' : 'No';
+}
+
