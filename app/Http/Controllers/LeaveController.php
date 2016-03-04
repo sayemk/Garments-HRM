@@ -160,7 +160,8 @@ class LeaveController extends Controller
      */
     public function show($id)
     {
-        //
+        $leaveapplication = Leave::findOrFail($id);
+        return view('leave.application.show',compact('leaveapplication'));
     }
 
     /**
@@ -169,9 +170,9 @@ class LeaveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return;
+       return $id;
     }
 
     /**
