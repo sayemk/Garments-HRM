@@ -172,7 +172,9 @@ class LeaveController extends Controller
      */
     public function edit($id)
     {
-       return $id;
+        $leave = Leave::findOrFail($id);
+        $leaveType = LeaveType::lists('name','id');
+        return view('leave.application.edit',compact('leave','leaveType'));
     }
 
     /**
