@@ -35,3 +35,14 @@ function getDaysInaYear($year,$day ='Friday', $format, $timezone='Asia/Dhaka')
     return $fridays;
 }
 
+function employeeStatus($status){
+	if ($status == 1) {
+		return "Active";
+	} else if($status==2){
+		return 'New';
+	} else {
+		return 'Inactive';
+	}
+	
+}
+

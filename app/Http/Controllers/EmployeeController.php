@@ -142,7 +142,7 @@ class EmployeeController extends Controller
         	return ($value==1)?'Male':'Female';
         });
         $grid->add('status','Status',true)->cell(function($value,$row){
-        	return ($value==1)?'Active':'Inactive';
+        	return employeeStatus($value);
         });
         $grid->edit('employee/edit', 'Edit','modify');
         $grid->link('employee/edit',"New Employee", "TR",['class' =>'btn btn-success']);
