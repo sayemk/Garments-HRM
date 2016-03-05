@@ -73,6 +73,7 @@ Route::group(['middleware' => 'acl'], function () {
     });
     Route::get('/leaveapplication/{id}','LeaveController@show');
     Route::get('/leaveapplication/{id}/edit','LeaveController@edit');
+    Route::PUT('/leaveapplication/{id}','LeaveController@update');
     Route::get('/leave/summary/json/{employee_id}','LeaveController@summary')->where('id', '^EMP-[0-9]*');
 
     Route::get('/holiday/destroy', 'HolidayController@destroy');

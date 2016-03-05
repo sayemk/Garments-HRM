@@ -16,7 +16,7 @@
 
     <div class="box-body">
         <div class="row">
-            {!! Form::open(array('url' => 'leaveapplication', 'method' => 'PUT', 'id'=>'leaveapplication')) !!}
+            {!! Form::open(array('url' => 'leaveapplication/'.$leave->id, 'method' => 'PUT', 'id'=>'leaveapplication')) !!}
             <div class="col-sm-8">
 
                 @include('layouts.validationError')

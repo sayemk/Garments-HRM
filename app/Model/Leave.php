@@ -18,8 +18,22 @@ class Leave extends Model
     	return $this->hasMany('App\Model\LeaveDetail','leave_id','id');
     }
 
-    public function getStart_day($value){
-        return Carbon::createFromFormat('Y-m-d',$value)->toDateString('d/m/Y');
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getStartDayAttribute($value){
+        $time = strtotime($value);
+        return date('d/m/Y',$time);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getEndDayAttribute($value){
+        $time = strtotime($value);
+        return date('d/m/Y',$time);
     }
 
 }

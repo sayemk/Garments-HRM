@@ -186,7 +186,53 @@ class LeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'employee_id' => 'required|exists:employees,employee_id',
+            'start_date' => 'required|date_format:d/m/Y',
+            'end_date' => 'required|date_format:d/m/Y',
+            'total_day' =>'required|numeric',
+            'leave_type'=>'required|array',
+            'sub_start_date'=>'required|array',
+            'sub_end_date'=>'required|array',
+            'sub_total_days'=>'required|array',
+            'payable'=>'required|array',
+        ]);
+
+        Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y-m-d');
+
+        $leaveapplication = Leave::findOrFail($id);
+
+        $employee = Employee::where('employee_id', $request->employee_id)->select(['id','name','employee_id'])->get();
+
+        $leaveapplication->employee_id = $employee[0]->id;
+        $leaveapplication->start_day =  Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y-m-d');
+        $leaveapplication->end_day = Carbon::createFromFormat('d/m/Y', $request->end_date)->toDateString('Y-m-d');
+
+        $start_day = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        $end_day = Carbon::createFromFormat('d/m/Y', $request->end_date);
+        $total_days = $end_day->diffInDays($start_day);
+
+
+        $leaveapplication->total_days = $total_days+1; //As diffInDays return 0 for same days
+
+        $leaveapplication->year = Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y');
+
+        $leaveapplication->save();
+        //Delete existing Leave Details
+        LeaveDetail::where('leave_id',$id)->delete();
+
+        foreach($request->leave_type as $index => $type){
+            $leaveDetails = new LeaveDetail();
+            $leaveDetails->leave_id = $leaveapplication->id;
+            $leaveDetails->leave_type_id = $type;
+            $leaveDetails->days = $request->sub_total_days[$index];
+            $leaveDetails->start_day = Carbon::createFromFormat('d/m/Y', $request->sub_start_date[$index])->toDateString('Y-m-d');
+            $leaveDetails->end_day = Carbon::createFromFormat('d/m/Y', $request->sub_end_date[$index])->toDateString('Y-m-d');
+            $leaveDetails->payable = $request->payable[$index];
+            $leaveDetails->save();
+        }
+
+        return redirect('/leaveapplication/'.$id.'/edit');
     }
     
     public function summary($employee_id){
