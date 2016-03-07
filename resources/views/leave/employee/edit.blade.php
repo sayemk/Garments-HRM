@@ -9,7 +9,6 @@
 
 @section('content')
   <!-- Info boxes -->
-         
         	<div class="box box-primary">
             
               <h3 class="box-title padding-left">Employee Leave Allocation</h3>

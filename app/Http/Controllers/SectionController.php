@@ -81,18 +81,18 @@ class SectionController extends Controller
         $edit = \DataEdit::source(new Section());
         $edit->link("section","Section", "TR",['class' =>'btn btn-primary'])->back();
 
-        $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
                 ->options([''=>"--Select--"])
                 ->options(Branch::lists("name", "id")->all())
                 ->rule('required|exists:branches,id')
                 ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
             ->options([''=>"--Select--"])
             ->options($departments)
             ->rule('required|exists:departments,id');
 
-        $edit->add('name','Section Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Section Name <span class="text-danger">*</span>', 'text')->rule('required');
 
         $edit->add('description','Description', 'textarea');
        

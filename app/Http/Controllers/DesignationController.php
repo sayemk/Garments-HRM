@@ -129,18 +129,18 @@ class DesignationController extends Controller
         $edit = \DataEdit::source(new Designation());
         $edit->link("designation","Designation", "TR",['class' =>'btn btn-primary'])->back();
 
-        $edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
              ->options([''=>'Select Branch'])
              ->options(Branch::lists("name", "id")->all())
              ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
              ->options([''=>"Select Department"])
              ->options(Department::lists('name','id')->all())
              ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
 
         
-        $edit->add('name','Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Name <span class="text-danger">*</span>', 'text')->rule('required');
 
         $edit->add('description','Description', 'redactor');
        

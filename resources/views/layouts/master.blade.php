@@ -16,12 +16,15 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/ionicons.min.css') }}">
      <!-- jvectormap -->
     <link rel="stylesheet" href=" {{ url('/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
+
+    <link rel="stylesheet" href=" {{ url('/assets/plugins/sweetalert/sweetalert.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('/assets/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ url('/assets/css/skins/_all-skins.min.css') }}">
     <link rel="stylesheet" href="{{ url('/assets/css/style.css') }}">
+
 
     {!! Rapyd::styles() !!}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -157,6 +160,10 @@
     <script src="{{ url('/assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="{{ url('/assets/plugins/chartjs/Chart.min.js') }}"></script>
+
+    <script src="{{ url('/assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <script src="{{ url('/assets/plugins/momentjs/moment.min.js') }}"></script>
     
     <!-- JQuery Form Validation -->
 

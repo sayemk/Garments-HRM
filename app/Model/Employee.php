@@ -39,7 +39,7 @@ class Employee extends Model
 
      public function leaveEmployees()
     {
-        return $this->hasMany("App\Model\leaveEmployees");
+        return $this->hasMany("App\Model\LeaveEmployee");
     }
 
     public function grade()

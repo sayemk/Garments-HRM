@@ -12,7 +12,7 @@
          
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Section </h3>
+              <h3 class="box-title padding-left">Employee</h3>
            
               <div class="box-body">
                 

@@ -5,17 +5,18 @@ namespace App\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Leave extends Model
+class LeaveDetail extends Model
 {
-    //
-	public function employee()
+    protected $table = 'leave_details';
+   
+    public function leave()
     {
-    	return $this->belongsTo("App\Model\Employee");
+    	return $this->belongsTo('App\Model\Leave');
     }
 
-    public function leaveDetails()
+    public function leaveType()
     {
-    	return $this->hasMany('App\Model\LeaveDetail','leave_id','id');
+    	return $this->belongsTo('App\Model\LeaveType','leave_type_id');
     }
 
     /**
@@ -35,5 +36,4 @@ class Leave extends Model
         $time = strtotime($value);
         return date('d/m/Y',$time);
     }
-
 }
