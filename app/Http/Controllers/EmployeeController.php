@@ -181,7 +181,7 @@ class EmployeeController extends Controller
         $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         $edit->add('name','Full Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         $edit->add('designations','Designations','select')
-             ->options([''=>'Select Grade'])
+             ->options([''=>'Select Designations'])
              ->options(Designation::lists('name','id')->all())
              ->attributes(['data-target'=>'grade','data-source'=>url('/grade/json'), 'onchange'=>"populateSelect(this)"]);
 
