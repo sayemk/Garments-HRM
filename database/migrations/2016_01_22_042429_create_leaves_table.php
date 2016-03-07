@@ -15,17 +15,16 @@ class CreateLeavesTable extends Migration
         Schema::create('leaves', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned();
-            $table->integer('leavetype_id')->unsigned();
-            $table->float('day');
-            $table->date('startDay');
-            $table->date('endDay');
-            $table->tinyInteger('payable')->unsigned();
+            $table->float('total_days');
+            $table->date('start_day');
+            $table->date('end_day');
+            $table->string('year',4);
             $table->text('remark');
             $table->integer('created_by')->unsigned();
             $table->integer('updated_by')->unsigned();
             $table->timestamps();
             $table->softDeletes();
-            $table->index(['employee_id','leavetype_id']);
+            $table->index(['employee_id','year']);
         });
     }
 

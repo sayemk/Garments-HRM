@@ -13,6 +13,9 @@
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/home',function(){
+    return redirect('/organization');
+});
 
 Route::group(['middleware' => 'acl'], function () {
     Route::get('/organization/', 'OrganizationController@show');
@@ -43,6 +46,38 @@ Route::group(['middleware' => 'acl'], function () {
     Route::get('/grade/', 'GradeController@index');
     Route::any('/grade/edit', 'GradeController@edit');
     Route::get('/grade/json/{designation_id}','GradeController@getLists')->where('id', '[0-9]+');
+
+    Route::get('/leavetype', 'LeaveTypeController@index');
+    Route::any('/leavetype/edit', 'LeaveTypeController@edit');
+    Route::get('/leavetype/json/{leavetype_id}','LeaveTypeController@getLists')->where('id', '[0-9]+');
+
+    Route::get('/leaveemployee', 'EmployeeLeaveController@index');
+    Route::any('/leaveemployee/edit', 'EmployeeLeaveController@edit');
+    Route::get('/leaveemployee/json/{leavetype_id}','EmployeeLeaveController@getLists')->where('id', '[0-9]+');
+
+    Route::get('/leaveapplication','LeaveController@index');
+    Route::get('/leaveapplication/create','LeaveController@create');
+    Route::post('/leaveapplication','LeaveController@store');
+    Route::any('/leaveapplication/edit',function(){
+
+        $show = \Input::get('show');
+        if (!empty($show)) {
+           return \Redirect::action('LeaveController@show', array($show));
+        }
+
+        $modify = \Input::get('modify');
+        if (!empty($modify)) {
+           return \Redirect::action('LeaveController@edit', array($modify));
+        }
+        return redirect('/leaveapplication');
+    });
+    Route::get('/leaveapplication/{id}','LeaveController@show');
+    Route::get('/leaveapplication/{id}/edit','LeaveController@edit');
+    Route::PUT('/leaveapplication/{id}','LeaveController@update');
+    Route::get('/leave/summary/json/{employee_id}','LeaveController@summary')->where('id', '^EMP-[0-9]*');
+
+    Route::get('/holiday/destroy', 'HolidayController@destroy');
+    Route::resource('/holiday', 'HolidayController');
     // Registration routes...
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');

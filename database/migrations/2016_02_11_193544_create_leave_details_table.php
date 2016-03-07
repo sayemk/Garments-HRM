@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHolidaysTable extends Migration
+class CreateLeaveDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,19 @@ class CreateHolidaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('holidays', function (Blueprint $table) {
+        Schema::create('leave_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',100);
-            $table->integer('year');
-            $table->date('date');
-            $table->tinyInteger('type')->unsigned();
+            $table->integer('leave_id')->unsigned();
+            $table->integer('leave_type_id')->unsigned();
+            $table->float('days');
+            $table->date('start_day');
+            $table->date('end_day');
+            $table->tinyInteger('payable')->unsigned();
             $table->integer('created_by')->unsigned();
             $table->integer('updated_by')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+            $table->index(['leave_id','leave_type_id']);
         });
     }
 
@@ -32,7 +35,6 @@ class CreateHolidaysTable extends Migration
      */
     public function down()
     {
-        Schema::drop('holidays');
+        Schema::drop('leave_details');
     }
 }
-         

@@ -142,7 +142,7 @@ class EmployeeController extends Controller
         	return ($value==1)?'Male':'Female';
         });
         $grid->add('status','Status',true)->cell(function($value,$row){
-        	return ($value==1)?'Active':'Inactive';
+        	return employeeStatus($value);
         });
         $grid->edit('employee/edit', 'Edit','modify');
         $grid->link('employee/edit',"New Employee", "TR",['class' =>'btn btn-success']);
@@ -158,29 +158,29 @@ class EmployeeController extends Controller
     public function edit()
     {
     	$edit = \DataEdit::source(new Employee());
-    	$edit->add('branch_id','Branch <i class="fa fa-asterisk text-danger"></i>','select')
+    	$edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
     		 ->options([''=>'Select Branch'])
     		 ->options(Branch::lists("name", "id")->all())
     		 ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $edit->add('department_id','Department <i class="fa fa-asterisk text-danger"></i>','select')
+        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Department"])
              ->options(Department::lists("name", "id")->all())
 			 ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this);setDesignation(this)"]);
 
-	    $edit->add('section_id','Section <i class="fa fa-asterisk text-danger"></i>','select')
+	    $edit->add('section_id','Section <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Section"])
              ->options(Section::lists("name", "id")->all())
 			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
 
-		$edit->add('line_id','Line <i class="fa fa-asterisk text-danger"></i>','select')
+		$edit->add('line_id','Line <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Line"])
              ->options(Line::lists("name", "id")->all());
 
         $edit->link("employee","Employee", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-        $edit->add('name','Full Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-        $edit->add('designations','Designations','select')
+        $edit->add('employee_id','Employee ID <span class="text-danger">*</span>', 'text')->rule('required');
+        $edit->add('name','Full Name <span class="text-danger">*</span>', 'text')->rule('required');
+        $edit->add('designations','Designations','multiselect')
              ->options([''=>'Select Grade'])
              ->options(Designation::lists('name','id')->all())
              ->attributes(['data-target'=>'grade','data-source'=>url('/grade/json'), 'onchange'=>"populateSelect(this)"]);
@@ -189,18 +189,18 @@ class EmployeeController extends Controller
              ->options([''=>'Select Grade'])
              ->options(Grade::lists('name','id')->all());
 
-        $edit->add('gender','Gender <i class="fa fa-asterisk text-danger"></i>','select')->options(['1'=>'Male','2'=>'Female'])->rule('required');
-        $edit->add('dob','Date Of Birth <i class="fa fa-asterisk text-danger"></i>','date')->format('d/m/Y', 'en')->rule('required');
-        $edit->add('father_name','Father\'s Name <i class="fa fa-asterisk text-danger"></i>','text')->rule('required');
-        $edit->add('present_address','Present Adress <i class="fa fa-asterisk text-danger"></i>','textarea')->attributes(['rows'=>3])->rule('required');
-        $edit->add('permanent_address','Permanent Adress <i class="fa fa-asterisk text-danger"></i>','textarea')->attributes(['rows'=>3])->rule('required');
-        $edit->add('primary_phone','Primary Phone <i class="fa fa-asterisk text-danger"></i>','text')->rule('required');
+        $edit->add('gender','Gender <span class="text-danger">*</span>','select')->options(['1'=>'Male','2'=>'Female'])->rule('required');
+        $edit->add('dob','Date Of Birth <span class="text-danger">*</span>','date')->format('d/m/Y', 'en')->rule('required');
+        $edit->add('father_name','Father\'s Name <span class="text-danger">*</span>','text')->rule('required');
+        $edit->add('present_address','Present Adress <span class="text-danger">*</span>','textarea')->attributes(['rows'=>3])->rule('required');
+        $edit->add('permanent_address','Permanent Adress <span class="text-danger">*</span>','textarea')->attributes(['rows'=>3])->rule('required');
+        $edit->add('primary_phone','Primary Phone <span class="text-danger">*</span>','text')->rule('required');
         $edit->add('secondary_phone','Secondary Phone','text');
         $edit->add('national_id','National ID','text');
         $edit->add('passport','Passport','text');
         $edit->add('birth_certificate','Birth Certificate','text');
-        $edit->add('joining_date','Joining Date <i class="fa fa-asterisk text-danger"></i>','date')->format('d/m/Y', 'en')->rule('required');
-        $edit->add('status','Status <i class="fa fa-asterisk text-danger"></i>','select')->options(['1'=>'Active','2'=>'Inactive'])->rule('required');
+        $edit->add('joining_date','Joining Date <span class="text-danger">*</span>','date')->format('d/m/Y', 'en')->rule('required');
+        $edit->add('status','Status <span class="text-danger">*</span>','select')->options(['1'=>'Active','2'=>'Inactive'])->rule('required');
         $edit->add('image','Photo', 'image')->move('uploads/images/employees')->preview(80,80);
        
         $edit->build();

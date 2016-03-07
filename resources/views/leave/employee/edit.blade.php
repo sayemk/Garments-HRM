@@ -1,18 +1,17 @@
 @extends('layouts.master')
 
-@section('title','Section')
+@section('title','Employee Leave Allocation')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'employee','parent_menu'=>''])
+   @include('layouts.sidebar',['active' =>'leaveemployee','parent_menu'=>'leave'])
 
 @endsection
 
 @section('content')
   <!-- Info boxes -->
-         
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Employee</h3>
+              <h3 class="box-title padding-left">Employee Leave Allocation</h3>
            
               <div class="box-body">
                 
@@ -20,40 +19,39 @@
 				
 					<div class="col-sm-8">
 	                  
-	                 {{--  {!! $edit->message !!}	                 
+	                  {!! $edit->message !!}	                 
 	                  {!! $edit->header !!}
-	                 
+	                
 	                    <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('branch_id') !!}
-	                      </div>
-	                    </div>
-	                    <div class="form-group">
-	                     
-	                      <div class="col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('department_id') !!}
+	                        {!! $edit->render('employee.employee_id') !!}
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('name') !!}
+	                        {!! $edit->render('leavetype_id') !!}
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
-	                      
-	                      <div class=" col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('description') !!}
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('leave_day') !!}
 	                      </div>
 	                    </div>
-	                     	                                        
+	                    <div class="form-group">
+	                     
+	                      <div class="col-sm-offset-2 col-sm-12">
+	                        {!! $edit->render('year') !!}
+	                      </div>
+	                    </div>
+	                                                         
 	                    <div class="form-group">
 	                      <div class="col-sm-offset-2 col-sm-9">
 	                        {!! $edit->footer !!}
 	                      </div>
-	                    </div> --}}
-	                    {!! $edit !!}
+	                    </div>
 	                  
 	                </div>
 					
@@ -71,29 +69,29 @@
 
 @section('script')
   <script>
-//   	jQuery(document).ready(function($) {
-// 	  $('form').validate({ 
+  	jQuery(document).ready(function($) {
+	  $('form').validate({ 
         
-//         rules: {
+        rules: {
             
-//             name: {
-//                 required: true,
-//             },
-//             description: {
-//                required: false
-//             },
-//             branch_id: {
-//             	required: true,
-//             	number:true
-//             }
-//             department_id: {
-//             	required: true,
-//             	number:true
-//             }
+            auto_employee_employee_id: {
+                required: true,
+            },
+            leavetype_id: {
+                required: true,
+                numeric:true
+            },
+            leave_day: {
+                required: true,
+                numeric:true
+            },
+            year: {
+                required: true,
+                numeric:true
+            },
+        },
 
-//         },
-
-//     });
-// });
+    });
+});
   </script>
 @endsection
