@@ -3,7 +3,7 @@
 @section('title','attendance')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance Setting'])
 
 @endsection
 

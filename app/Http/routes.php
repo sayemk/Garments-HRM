@@ -18,6 +18,7 @@ Route::get('/home',function(){
 });
 
 Route::group(['middleware' => 'acl'], function () {
+    
     Route::get('/organization/', 'OrganizationController@show');
     Route::any('/organization/edit', 'OrganizationController@edit');
     Route::get('/branch', 'BranchController@index');
@@ -76,17 +77,17 @@ Route::group(['middleware' => 'acl'], function () {
     Route::PUT('/leaveapplication/{id}','LeaveController@update');
     Route::get('/leave/summary/json/{employee_id}','LeaveController@summary')->where('id', '^EMP-[0-9]*');
 
-    Route::get('/holiday/destroy', 'HolidayController@destroy');
+    Route::get('/holiday/destroy','HolidayController@destroy');
     Route::resource('/holiday', 'HolidayController');
     // Registration routes...
-	Route::get('auth/register', 'Auth\AuthController@getRegister');
-	Route::post('auth/register', 'Auth\AuthController@postRegister');
+	Route::get('auth/register','Auth\AuthController@getRegister');
+	Route::post('auth/register','Auth\AuthController@postRegister');
 
-    Route::get('/attendance', 'AttendanceController@index');
-    Route::any('/attendance/edit', 'AttendanceController@edit');
+    Route::get('/attendance','AttendanceController@index');
+    Route::any('/attendance/edit','AttendanceController@edit');
 
-    Route::get('/setting', 'SettingController@index');
-    Route::any('/setting/edit', 'SettingController@edit');
+    Route::get('/setting','SettingController@index');
+    Route::any('/setting/edit','SettingController@edit');
 
 });
 
