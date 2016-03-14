@@ -82,7 +82,10 @@ Route::group(['middleware' => 'acl'], function () {
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
 
-
+    //Salary Structure
+    Route::get('/salary/structure', 'SalaryStructureController@index');
+    Route::any('/leavetype/edit', 'LeaveTypeController@edit');
+    Route::get('/leavetype/json/{leavetype_id}','LeaveTypeController@getLists')->where('id', '[0-9]+');
 
 });
 
