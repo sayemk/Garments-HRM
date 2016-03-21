@@ -178,10 +178,11 @@ class EmployeeController extends Controller
              ->options(Line::lists("name", "id")->all());
 
         $edit->link("employee","Employee", "TR",['class' =>'btn btn-primary'])->back();
-        $edit->add('employee_id','Employee ID <span class="text-danger">*</span>', 'text')->rule('required');
-        $edit->add('name','Full Name <span class="text-danger">*</span>', 'text')->rule('required');
-        $edit->add('designations','Designations','multiselect')
-             ->options([''=>'Select Grade'])
+
+        $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('name','Full Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('designations','Designations','select')
+             ->options([''=>'Select Designations'])
              ->options(Designation::lists('name','id')->all())
              ->attributes(['data-target'=>'grade','data-source'=>url('/grade/json'), 'onchange'=>"populateSelect(this)"]);
 

@@ -82,7 +82,11 @@ Route::group(['middleware' => 'acl'], function () {
 	Route::get('auth/register', 'Auth\AuthController@getRegister');
 	Route::post('auth/register', 'Auth\AuthController@postRegister');
 
+    Route::get('/attendance', 'AttendanceController@index');
+    Route::any('/attendance/edit', 'AttendanceController@edit');
 
+    Route::get('/setting', 'SettingController@index');
+    Route::any('/setting/edit', 'SettingController@edit');
 
 });
 

@@ -47,4 +47,9 @@ class Employee extends Model
         return $this->belongsTo('App\Model\Grade');
     }
 
+        public function attendance()
+    {
+        return $this->hasMany('App\Model\Attendance','');
+    }
+
 }

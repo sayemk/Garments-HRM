@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 
 class SettingController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -42,6 +41,7 @@ class SettingController extends Controller
 
         return  view('setting.index', compact('grid'));
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -51,6 +51,7 @@ class SettingController extends Controller
     {
         //
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -61,6 +62,7 @@ class SettingController extends Controller
     {
         //
     }
+
     /**
      * Display the specified resource.
      *

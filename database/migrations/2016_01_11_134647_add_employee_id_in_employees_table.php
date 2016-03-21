@@ -13,7 +13,7 @@ class AddEmployeeIdInEmployeesTable extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            //$table->string('employee_id',10)->after('id')->unique();
+            $table->string('employee_id',10)->after('id')->unique();
         });
     }
 
