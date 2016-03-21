@@ -13,6 +13,16 @@ class Designation extends Model
     {
     	return $this->belongsTo("App\Model\Department");
     }
+
+    public function branch()
+    {
+        return $this->belongsTo("App\Model\Branch");
+    }
+
+    public function section()
+    {
+        return $this->belongsTo("App\Model\Section");
+    }
     
     public function employees()
     {
@@ -23,4 +33,5 @@ class Designation extends Model
     {
     	return $this->hasMany("App\Model\Grade");
     }
+    
 }

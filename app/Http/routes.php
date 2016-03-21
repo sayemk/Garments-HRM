@@ -29,7 +29,7 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/designation', 'DesignationController@index');
     Route::any('/designation/edit', 'DesignationController@edit');
-    Route::get('/designation/json/{department_id}','DesignationController@getLists')->where('id', '[0-9]+');
+    Route::get('/designation/json/{section_id}','DesignationController@getLists')->where('id', '[0-9]+');
 
     Route::get('/section', 'SectionController@index');
     Route::any('/section/edit', 'SectionController@edit');
@@ -85,6 +85,8 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/attendance','AttendanceController@index');
     Route::any('/attendance/edit','AttendanceController@edit');
+    Route::get('/attendance/upload','AttendanceController@create');
+    Route::post('/attendance/store','AttendanceController@store');
 
     Route::get('/setting','SettingController@index');
     Route::any('/setting/edit','SettingController@edit');

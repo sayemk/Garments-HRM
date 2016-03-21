@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -13,5 +14,10 @@ class Attendance extends Model
     public function employees()
     {
     	return $this->belongsTo("App\Model\Employee",'employee_id','id');
+    }
+
+    public function getDateAttribute($value)
+    {
+    	 return Carbon::parse($value)->format('d/m/Y');
     }
 }

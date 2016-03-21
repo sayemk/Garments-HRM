@@ -63,7 +63,7 @@
 	                       {!! $edit->render('overtime') !!}
 	                      </div>
 	                    </div>
-	                     	                                        
+	                                                     
 	                    <div class="form-group">
 	                      <div class="col-sm-offset-2 col-sm-9">
 	                        {!! $edit->footer !!}
@@ -80,11 +80,19 @@
 
         </div>
             
-          
-          
+   
 @endsection
 @section('script')
+   <script src="{{ asset('/assets/plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+
   <script>
+   		$("#date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        $("#end_date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        $(":input").inputmask();
+
+
   	jQuery(document).ready(function($) {
   		var settings = {!! $settings !!}
   		console.log(getSettingValue(settings,'attendance_buffer_time'));
@@ -93,12 +101,26 @@
         
         rules: {
             
-            name: {
+            overtime: {
                 required: true,
             },
-            description: {
+            let_time: {
                required: true,
             },
+            duration: {
+               required: true,
+            },
+            out_time: {
+               required: true,
+            },
+			in_time: {
+               required: true,
+            },
+            date: {
+               required: true,
+            },
+            
+            
         },
     });
 	  //time calculation

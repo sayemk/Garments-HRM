@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Model\Branch;
+use App\Model\Section;
 use App\Model\Designation;
 use App\Model\Department;
 use Illuminate\Http\Request;
@@ -22,12 +23,12 @@ class DesignationController extends Controller
         //$grid = \DataGrid::source("designations");
         //$grid = \DataGrid::source(designation::with('department.branch'));
 
-        $filter = \DataFilter::source(designation::with('department.branch'));
+        $filter = \DataFilter::source(designation::with('department','branch','section'));
 
-        $filter->add('department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
+        $filter->add('branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
                     ->scope(function($query){
-                        if (!empty(\Input::get('department_branch_name'))) {
-                            $branch = Branch::where(['id'=>\Input::get('department_branch_name')])->with('departments')->get();
+                        if (!empty(\Input::get('branch_name'))) {
+                            $branch = Branch::where(['id'=>\Input::get('branch_name')])->with('departments')->get();
                             $departments = array_pluck($branch[0]->departments->toArray(), 'id');
                             return $query->whereIn('department_id',$departments);
                         } else {
@@ -40,7 +41,7 @@ class DesignationController extends Controller
         
         $filter->add('department.name','Department','select')
             ->options([''=>"--Select--"])
-            ->options(Department::where('branch_id', \Input::get('department_branch_name'))->lists("name", "id"))
+            ->options(Department::where('branch_id', \Input::get('department_name'))->lists("name", "id"))
             ->scope(function($query){
                 if (!empty(\Input::get('department_name')) && trim(\Input::get('department_name')) !="--Select--") {
 
@@ -49,7 +50,16 @@ class DesignationController extends Controller
                 }else{
                     return $query;
                 }
-            });
+            })
+            ->attributes(['data-target'=>'section_name','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        $filter->add('section.name','Section','select')
+
+            ->options([''=>"Select Section"])
+            ->options(Section::where('department_id', \Input::get('department'))->lists("name", "id"));
+
+            
+        
         $filter->submit('search');
         $filter->reset('reset');
         $filter->build();
@@ -66,12 +76,11 @@ class DesignationController extends Controller
 
         });
 
-        $grid->add('{{ $department->branch->name }}','Branch','branch_id');
+        $grid->add('{{ $branch->name }}','Branch','branch_id');
         $grid->add('{{ $department->name }}','Department','department_id');
-        
+        $grid->add('{{ $section->name }}','Section','section_id');
 
         $grid->add('name',' Name',true); 
-       
        
         $grid->add('description','Description'); 
         $grid->link('designation/edit',"New Designation", "TR",['class' =>'btn btn-success']);
@@ -139,6 +148,11 @@ class DesignationController extends Controller
              ->options(Department::lists('name','id')->all())
              ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
 
+        $edit->add('section_id','Section <span class="text-danger">*</span>','select')
+             ->options([''=>"Select Section"])
+             ->options(Section::lists('name','id')->all());
+             //->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+
         
         $edit->add('name','Name <span class="text-danger">*</span>', 'text')->rule('required');
 
@@ -175,6 +189,7 @@ class DesignationController extends Controller
 
     public function getLists($department_id)
     {
-        return Designation::where('department_id',$department_id)->get();
+        return Designation::where('section_id',$department_id)->get();
     }
+
 }

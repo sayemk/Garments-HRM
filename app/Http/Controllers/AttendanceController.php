@@ -8,6 +8,7 @@ use App\Model\Employee;
 use App\Model\Setting;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -45,9 +46,10 @@ class AttendanceController extends Controller
         $grid->add('overtime','Overtime',true);
         $grid->add('let_time','Let Time',true);
 
+
         $grid->edit('attendance/edit', 'Action','show|modify');
         $grid->link('attendance/edit',"New Attendance", "TR",['class' =>'btn btn-success']);
-        //$grid->orderBy('year','ASC');
+        $grid->orderBy('date','ASC');
         
         $grid->paginate(10);
 
@@ -62,7 +64,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-        //
+        return view('attendance.create');
     }
 
     /**
@@ -73,7 +75,9 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'image' => 'required|unique:posts|max:255',
+        ]);
     }
 
     /**
@@ -107,10 +111,36 @@ class AttendanceController extends Controller
         }
 
         if($flag){
-            $date = \Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y-m-d');
-            $attendance = Attendance::firstOrNew(['employee_id'=>$request->employee_id,'date'=>$date]);
-           $attendance->employee_id=$request->employee_id;
-           $attendance->save();
+            
+            $date = Carbon::createFromFormat('d/m/Y', $request->date)->toDateString('Y-m-d');
+            
+            $attendance = Attendance::where(['employee_id'=>$request->employee_id, 'date'=>$date])->get();
+
+            if (!$attendance->isEmpty()) {
+                
+                $attendance = $attendance->first();
+                
+                $attendance->in_time = $request->in_time;
+                $attendance->out_time = $request->out_time;
+                $attendance->duration = $request->duration;
+                $attendance->employee_id = $request->employee_id;
+                $attendance->let_time = $request->let_time;
+                $attendance->overtime = $request->overtime;
+                $attendance->date = $date;
+                $attendance->save();
+            } else {
+                $attendance = new Attendance();
+                $attendance->in_time = $request->in_time;
+                $attendance->out_time = $request->out_time;
+                $attendance->duration = $request->duration;
+                $attendance->employee_id = $request->employee_id;
+                $attendance->let_time = $request->let_time;
+                $attendance->overtime = $request->overtime;
+                $attendance->date = $date;
+                $attendance->save();
+            }
+            
+           //$attendance->save();
             return redirect('/attendance');
         }
 
@@ -134,14 +164,14 @@ class AttendanceController extends Controller
                 ->rule('required|exists:employees,id');
 
 
-        $edit->add('date','Date <span style="color:red;">*</span>', 'date');
+        $edit->add('date','Date <span style="color:red;">*</span>', 'text');
 
         $edit->add('in_time','In Time <span style="color:red;">*</span>', 'text')->rule('required');
-        $edit->add('out_time','Out Time <span style="color:red;">*</span>', 'datetime')->format('H:i:s')->rule('required');
+        $edit->add('out_time','Out Time <span style="color:red;">*</span>', 'text');
         $edit->add('duration','Duration <span style="color:red;">*</span>', 'text')->rule('required');
         $edit->add('let_time','Let Time <span style="color:red;">*</span>', 'text')->rule('required');
         $edit->add('overtime','Overtime <span style="color:red;">*</span>', 'text')->rule('required');
-        
+
         $edit->build();
 
         return $edit->view('attendance.edit', compact('edit','settings')); 
