@@ -88,6 +88,7 @@ function populateSelect (event) {
 function setDesignation(event) {
 	var url = $('#base_url').text()+'/designation/json/'+$(event).val();
 	var target ='designations';
+	console.log(url);
 	console.log(target);
 	$("#"+target).html('');
 	$.ajax({

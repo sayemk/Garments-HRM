@@ -3,7 +3,7 @@
 @section('title','setting')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'setting','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'setting','parent_menu'=>'Setting'])
 
 @endsection
 
@@ -17,10 +17,10 @@
       <div class="box-body">
          	{!! $grid !!}
       </div>
-                
-                
+
 			<div class="box-footer clearfix">
-		                  
+
       </div>
-  </div>          
+  </div> 
+           
 @endsection

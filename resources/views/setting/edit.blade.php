@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Attendance')
+@section('title','setting')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'setting','parent_menu'=>'Setting'])
 
 @endsection
 

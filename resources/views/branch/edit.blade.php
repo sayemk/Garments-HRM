@@ -3,7 +3,7 @@
 @section('title','Branch')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'branch','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'branch','parent_menu'=>'settings'])
 
 @endsection
 

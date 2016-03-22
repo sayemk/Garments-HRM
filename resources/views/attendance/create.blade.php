@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','attendance')
+@section('title','Attendance Upload')
 @section('sidebar')
 
    @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance Setting'])
@@ -12,11 +12,13 @@
          
   <div class="box box-primary">
             
-      <h3 class="box-title padding-left">Attendance</h3>
+      <h3 class="box-title padding-left">Attendance Upload</h3>
    
       <div class="box-body">
-          {!! $filter !!}
-         	{!! $grid !!}
+         {!! Form::open(array('url' => 'attendance/store', 'class'=>'form-horizontal','files'=>true)) !!}
+            {!! Form::file('image') !!}
+            {!! Form::submit('Upload',['class'=>'btn btn-primary']) !!}
+         {!! Form::close() !!}
       </div>
                 
                 

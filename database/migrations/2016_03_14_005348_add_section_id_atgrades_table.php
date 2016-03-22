@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class AddSectionIdAtgradesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,10 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('string',150)->unique();
-            $table->string('value',100);
-            $table->timestamps();
-            
+        Schema::table('grades', function (Blueprint $table) {
+            //
+            $table->integer('section_id')->unsigned()->after('department_id');
+
         });
     }
 
@@ -28,6 +26,8 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('settings');
+        Schema::table('grades', function (Blueprint $table) {
+           $table->dropColumn('section_id');
+        });
     }
 }

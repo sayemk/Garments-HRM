@@ -16,6 +16,16 @@ class Employee extends Model
     {
     	return $this->belongsTo("App\Model\Department");
     }
+    public function section()
+    {
+        return $this->belongsTo("App\Model\Section");
+
+    }
+    public function branch()
+    {
+        return $this->belongsTo("App\Model\Branch");
+
+    }
 
     public function designations()
     {

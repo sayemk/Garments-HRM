@@ -82,17 +82,19 @@ class SettingController extends Controller
      */
     public function edit()
     {
-         
+        if (\Input::get('delete')) abort(403);
         $edit = \DataEdit::source(new Setting());
         $edit->link("setting","Manage Setting", "TR",['class' =>'btn btn-primary'])->back();
         
-        $edit->add('string','string<i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('string','String<i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         $edit->add('value','Value<i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
         
         $edit->build();
 
         return $edit->view('setting.edit', compact('edit')); 
     }
+
+
 
     /**
      * Update the specified resource in storage.

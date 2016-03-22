@@ -134,15 +134,9 @@ class HolidayController extends Controller
             } else {
                 $request->session()->flash('system_message', 'Fail to create Government holiday! Please Try again.');
             }
-            
         }
 
         return redirect('holiday/create');
-
-
-
-
-
     }
 
     /**
@@ -155,9 +149,6 @@ class HolidayController extends Controller
     {
         //
     }
-
-   
-
     /**
      * Update the specified resource in storage.
      *

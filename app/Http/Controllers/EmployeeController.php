@@ -19,76 +19,76 @@ class EmployeeController extends Controller
     {
     	// return Employee::with('line.section.department.branch','designations')->get();
         
-        $filter = \DataFilter::source(Employee::with('line.section.department.branch','designations'));
+        $filter = \DataFilter::source(Employee::with('line','section','department','branch','designations'));
         
         $filter->add('employee_id','Employee ID','text');
-        $filter->add('line.section.department.branch','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
-                    ->scope(function($query){
-                        if (!empty(\Input::get('line_section_department_branch'))) {
-                            $branches = Branch::where(['id'=>\Input::get('line_section_department_branch')])->with('departments.sections.lines')->get();
-                            $lines = [];
-                            foreach ($branches as $branch) {
-                            	foreach ($branch->departments as $department) {
-                            		foreach ($department->sections as $section) {
-                            			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
-                            		}
-                            	}
-                            }
-                            return $query->whereIn('line_id',$lines);
-                        } else {
-                           return $query; 
-                        }
+        $filter->add('branch','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
+                    // ->scope(function($query){
+                    //     if (!empty(\Input::get('line_section_department_branch'))) {
+                    //         $branches = Branch::where(['id'=>\Input::get('line_section_department_branch')])->with('departments.sections.lines')->get();
+                    //         $lines = [];
+                    //         foreach ($branches as $branch) {
+                    //         	foreach ($branch->departments as $department) {
+                    //         		foreach ($department->sections as $section) {
+                    //         			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
+                    //         		}
+                    //         	}
+                    //         }
+                    //         return $query->whereIn('line_id',$lines);
+                    //     } else {
+                    //        return $query; 
+                    //     }
 
-                    })
-                    ->attributes(['data-target'=>'line_section_department','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+                    // })
+                    ->attributes(['data-target'=>'department','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $filter->add('line.section.department','Department','select')
+        $filter->add('department','Department','select')
 
             ->options([''=>"Select Department"])
-            ->options(Department::where('branch_id', \Input::get('line_section_department_branch'))->lists("name", "id"))
-            ->scope(function($query){
-                if (!empty(\Input::get('line_section_department')) && trim(\Input::get('line_section_department')) !="--Select--") {
+            ->options(Department::where('branch_id', \Input::get('branch'))->lists("name", "id"))
+            // ->scope(function($query){
+            //     if (!empty(\Input::get('department')) && trim(\Input::get('department')) !="--Select--") {
 
-                	$lines = [];
+            //     	$lines = [];
 
-                    $departments = Department::where(['id'=>\Input::get('line_section_department')])->with('sections.lines')->get();
-                    	foreach ($departments as $department) {
-                    		foreach ($department->sections as $section) {
-                    			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
-                    		}
-                    	}
-                	return $query->whereIn('line_id',$lines);
+            //         $departments = Department::where(['id'=>\Input::get('line_section_department')])->with('sections.lines')->get();
+            //         	foreach ($departments as $department) {
+            //         		foreach ($department->sections as $section) {
+            //         			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
+            //         		}
+            //         	}
+            //     	return $query->whereIn('line_id',$lines);
 
-                }else{
-                    return $query;
-                }
-            })
-            ->attributes(['data-target'=>'line_section','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+            //     }else{
+            //         return $query;
+            //     }
+            // })
+            ->attributes(['data-target'=>'section','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
        
-        $filter->add('line.section','Section','select')
+        $filter->add('section','Section','select')
 
             ->options([''=>"Select Section"])
-            ->options(Section::where('department_id', \Input::get('line_section_department'))->lists("name", "id"))
-            ->scope(function($query){
-                if (!empty(\Input::get('line_section')) && trim(\Input::get('line_section')) !="--Select--") {
+            ->options(Section::where('department_id', \Input::get('department'))->lists("name", "id"))
+            // ->scope(function($query){
+            //     if (!empty(\Input::get('line_section')) && trim(\Input::get('line_section')) !="--Select--") {
 
-                	$lines= [];
+            //     	$lines= [];
 
-                    $sections = Section::where(['id'=>\Input::get('line_section')])->with('lines')->get();
+            //         $sections = Section::where(['id'=>\Input::get('line_section')])->with('lines')->get();
                    
-            		foreach ($sections as $section) {
-            			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
-            		}
+            // 		foreach ($sections as $section) {
+            // 			$lines = array_merge($lines, array_pluck($section->lines->toArray(), 'id'));
+            // 		}
             		
-                    return $query->whereIn('line_id',$lines);
+            //         return $query->whereIn('line_id',$lines);
 
-                }else{
-                    return $query;
-                }
-            })
-            ->attributes(['data-target'=>'department_section_name','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+            //     }else{
+            //         return $query;
+            //     }
+            // })
+            ->attributes(['data-target'=>'line','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
         
-        	$filter->add('line','Section','select')
+        	$filter->add('line','Line','select')
 
             ->options([''=>"Select Line"])
             ->options(Line::where('section_id', \Input::get('line_section'))->lists("name", "id"))
@@ -134,10 +134,10 @@ class EmployeeController extends Controller
         $grid->add('name','Employee Name',true); 
         $grid->add('{{  implode(", ", $designations->lists("name")->all()) }}','Designation',true);
        
-        $grid->add('{{ $line->section->department->branch->name }}','Branch','branch_id');
-        $grid->add('{{ $line->section->department->name }}','Department','department_id');
-        $grid->add('{{ $line->section->name }}','Section','section_id');
-        $grid->add('{{ $line->name }}','Line','line_id');
+        $grid->add('{{ $branch->name }}','Branch','branch_id');
+        $grid->add('{{ $department->name }}','Department','department_id');
+        $grid->add('{{ $section->name }}','Section','section_id');
+        $grid->add('{{ @$line->name }}','Line','line_id');
         $grid->add('gender','Gender',true)->cell(function($value,$row){
         	return ($value==1)?'Male':'Female';
         });
@@ -166,12 +166,12 @@ class EmployeeController extends Controller
         $edit->add('department_id','Department <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Department"])
              ->options(Department::lists("name", "id")->all())
-			 ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this);setDesignation(this)"]);
+			 ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
 
 	    $edit->add('section_id','Section <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Section"])
              ->options(Section::lists("name", "id")->all())
-			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this)"]);
+			 ->attributes(['data-target'=>'line_id','data-source'=>url('/line/json'), 'onchange'=>"populateSelect(this);setDesignation(this)"]);
 
 		$edit->add('line_id','Line <span class="text-danger">*</span>','select')
 			 ->options([''=>"Select Line"])
@@ -179,8 +179,8 @@ class EmployeeController extends Controller
 
         $edit->link("employee","Employee", "TR",['class' =>'btn btn-primary'])->back();
 
-        $edit->add('employee_id','Employee ID <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
-        $edit->add('name','Full Name <i class="fa fa-asterisk text-danger"></i>', 'text')->rule('required');
+        $edit->add('employee_id','Employee ID <span class="text-danger">*</span>', 'text')->rule('required');
+        $edit->add('name','Full Name <span class="text-danger">*</span>', 'text')->rule('required');
         $edit->add('designations','Designations','select')
              ->options([''=>'Select Designations'])
              ->options(Designation::lists('name','id')->all())
