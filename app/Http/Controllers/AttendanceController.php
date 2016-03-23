@@ -9,6 +9,8 @@ use App\Model\Setting;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class AttendanceController extends Controller
 {
@@ -49,7 +51,7 @@ class AttendanceController extends Controller
 
         $grid->edit('attendance/edit', 'Action','show|modify');
         $grid->link('attendance/edit',"New Attendance", "TR",['class' =>'btn btn-success']);
-        $grid->orderBy('date','ASC');
+        $grid->orderBy('date','DESC');
         
         $grid->paginate(10);
 
@@ -76,8 +78,51 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'image' => 'required|unique:posts|max:255',
+            'file' => 'required|max:2000|mimes:csv,txt',
         ]);
+
+        $destinationPath = 'uploads/attendance/'.date('d-m-Y');
+
+        $file = fopen($request->file('file')->getRealPath(),'r');
+        echo "<pre>";
+        try{
+            while(! feof($file))
+            {
+                $line = fgets($file);
+                $line = str_replace("\t",' ',$line);
+
+                $attRecord = array_values(explode(" ",$line));
+
+                $employee =Employee::where('employee_id',$attRecord[0])->first();
+                if(!empty($employee)){
+                    $attendance = Attendance::where(['employee_id'=>$employee->id,'date'=>$attRecord[1]])->first();
+                    if (!empty($attendance))
+                    {
+                        if (is_null($attendance->out_time)){
+                            //Set out time and overtime duration
+                        }
+                    } else{
+                        echo 'new\n';
+                        //create new record
+                    }
+                }
+            }
+
+            $name = $request->file('file')->getClientOriginalName();
+            $fileName = rand('1111','9999').'_'.$name;
+            $request->file('file')->move($destinationPath, $fileName);
+
+            \Session::flash('system_message', 'Upload successfully');
+
+
+        }catch (\Exception $e){
+
+        }
+
+
+        //print_r($contents);
+
+        return 0;// response()->json($contents);
     }
 
     /**
