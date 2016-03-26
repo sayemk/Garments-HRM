@@ -84,11 +84,15 @@ class AttendanceController extends Controller
         $destinationPath = 'uploads/attendance/'.date('d-m-Y');
 
         $file = fopen($request->file('file')->getRealPath(),'r');
-        echo "<pre>";
-        try{
+
+
+            $results =[];
+
             while(! feof($file))
             {
                 $line = fgets($file);
+                $line1 = $line;
+                $flag =false;
                 $line = str_replace("\t",' ',$line);
 
                 $attRecord = array_values(explode(" ",$line));
@@ -99,13 +103,31 @@ class AttendanceController extends Controller
                     if (!empty($attendance))
                     {
                         if (is_null($attendance->out_time)){
-                            //Set out time and overtime duration
+                            $attendance->out_time = $attRecord[2];
+                            $attendance->duration = durationCalc($attendance->in_time,$attendance->out_time);
+                            $setting = Setting::where('string','office_duration_time')->first();
+
+                            $attendance->overtime = overtimeCalc($attendance->duration, $setting->value);
+                            if($attendance->save()){
+                                $flag = true;
+                            }
                         }
                     } else{
-                        echo 'new\n';
-                        //create new record
+                        
+                        $attendance = new Attendance();
+                        $attendance->employee_id= $employee->id;
+                        $attendance->in_time = $attRecord[2];
+                        $attendance->date = $attRecord[1];
+                        
+                        $bufferTime =  Setting::where('string','attendance_buffer_time')->first();
+                        $attendance->let_time = lateTimeCalc($attendance->in_time, $bufferTime->value);
+                        if($attendance->save()){
+                            $flag = true;
+                        }
                     }
                 }
+
+                $results[$line1] = $flag;
             }
 
             $name = $request->file('file')->getClientOriginalName();
@@ -115,14 +137,8 @@ class AttendanceController extends Controller
             \Session::flash('system_message', 'Upload successfully');
 
 
-        }catch (\Exception $e){
 
-        }
-
-
-        //print_r($contents);
-
-        return 0;// response()->json($contents);
+        return view('attendance.message', compact('results'));
     }
 
     /**

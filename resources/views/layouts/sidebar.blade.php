@@ -74,6 +74,9 @@
           <li class="@if($active == 'attendance') active @endif">
             <a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i>Manual Attendance</a>
           </li>
+          <li class="@if($active == 'upload') active @endif">
+            <a href="{{ url('attendance/upload') }}"><i class="fa fa-circle-o"></i>Upload Attendance</a>
+          </li>
 
         </ul>
       </li>

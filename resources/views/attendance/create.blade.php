@@ -3,7 +3,7 @@
 @section('title','Attendance Upload')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance Setting'])
+   @include('layouts.sidebar',['active' =>'upload','parent_menu'=>'Attendance Setting'])
 
 @endsection
 
@@ -15,8 +15,11 @@
       <h3 class="box-title padding-left">Attendance Upload</h3>
    
       <div class="box-body">
+          @include('layouts.validationError')
+          @include('layouts.system_message')
          {!! Form::open(array('url' => 'attendance/store', 'class'=>'form-horizontal','files'=>true)) !!}
-            {!! Form::file('image') !!}
+            {!! Form::file('file') !!}
+          <br>
             {!! Form::submit('Upload',['class'=>'btn btn-primary']) !!}
          {!! Form::close() !!}
       </div>
