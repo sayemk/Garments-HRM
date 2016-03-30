@@ -101,25 +101,7 @@
         
         rules: {
             
-            overtime: {
-                required: true,
-            },
-            let_time: {
-               required: true,
-            },
-            duration: {
-               required: true,
-            },
-            out_time: {
-               required: true,
-            },
-			in_time: {
-               required: true,
-            },
-            date: {
-               required: true,
-            },
-            
+       
             
         },
     });

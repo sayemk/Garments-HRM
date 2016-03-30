@@ -160,7 +160,6 @@ class AttendanceController extends Controller
      */
     public function edit(Request $request)
     {
-
         $flag = false;
 
         if (!empty(\Input::get('insert'))) {
