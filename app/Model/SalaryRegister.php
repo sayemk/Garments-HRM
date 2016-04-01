@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SalaryRegister extends Model
 {
     use SoftDeletes;
-    protected $table='salary_register';
+    protected $table='salary_registers';
 
     public function employee(){
         return $this->belongsTo('App\Model\Employee','employee_id','id');

@@ -64,7 +64,7 @@
         </ul>
       </li>
 
-<<<<<<< HEAD
+
       <li class=" @if($parent_menu == 'salary') active @endif treeview">
         <a href="#">
           <i class="fa fa-money"></i> <span>Salary </span>
@@ -75,16 +75,13 @@
           <li class="@if($active == 'structure') active @endif">
             <a href="{{ url('salary/structure') }}"><i class="fa fa-circle-o"></i>Salary Structures</a>
           </li>
+          <li class="@if($active == 'structure') active @endif">
+            <a href="{{ url('salary/create') }}"><i class="fa fa-circle-o"></i>Salary Generation</a>
+          </li>
 
-          <li class="@if($active == 'branch') active @endif">
-            <a href="{{ url('holiday') }}"><i class="fa fa-circle-o"></i>Holidays</a>
-          </li>
-          <li class="@if($active == 'leaveemployee') active @endif">
-            <a href="{{ url('leaveemployee') }}"><i class="fa fa-circle-o"></i>Employee Leave</a>
-          </li>
-          <li class="@if($active == 'leaveapplication') active @endif">
-            <a href="{{ url('leaveapplication') }}"><i class="fa fa-circle-o"></i>Leave Application</a>
-=======
+        </ul>
+      </li>
+
       <li class=" @if($parent_menu == 'Attendance Setting') active @endif treeview">
         <a href="#">
          <i class="fa fa-user"></i> <span>Attendance </span>
@@ -97,16 +94,12 @@
           </li>
           <li class="@if($active == 'upload') active @endif">
             <a href="{{ url('attendance/upload') }}"><i class="fa fa-circle-o"></i>Upload Attendance</a>
->>>>>>> master
+
           </li>
 
         </ul>
       </li>
 
-<<<<<<< HEAD
-
-
-=======
       <li class=" @if($parent_menu == 'Setting') active @endif treeview">
 
         <a href="#">
@@ -122,7 +115,7 @@
 
       </li>
    
->>>>>>> master
+
     </ul>
   </section>
 <!-- /.sidebar -->

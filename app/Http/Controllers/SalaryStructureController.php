@@ -29,6 +29,7 @@ class SalaryStructureController extends Controller
 
                     return $query->where('employee_id',$employee->id);
                 }
+                return $query;
             });
         $filter->add('type','Salary Mode','select')->options([''=>'Select Salary Mode','1'=>'Bank','2'=>'Cash']);
         $filter->submit('search');
@@ -51,6 +52,7 @@ class SalaryStructureController extends Controller
         $grid->add('m_a','M/A');
         $grid->add('t_a','T/A');
         $grid->add('f_a','F/A');
+        $grid->add('ot_rate','OT Rate');
         $grid->add('gross','Gross Salary',true);
         $grid->add('type','Salary Mode',true)->cell(function($value){
             return $value==1 ? 'Bank' : 'Cash';
@@ -103,24 +105,31 @@ class SalaryStructureController extends Controller
     {
         $edit = \DataEdit::source(new SalaryStructure());
         $edit->link("salary/structure","Salary Structure", "TR",['class' =>'btn btn-primary'])->back();
-//        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
-//            ->options([''=>'Select Branch'])
-//            ->options(Branch::lists("name", "id")->all())
-//            ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
-//        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
-//            ->options([''=>"Select Department"])
-//            ->options(Department::lists('name','id')->all())
-//            ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
-//
-//        $edit->add('section_id','Section <span class="text-danger">*</span>','select')
-//            ->options([''=>"Select Department"])
-//            ->options(Section::lists('name','id')->all());
-//        $edit->add('name','Line Name <span class="text-danger">*</span>', 'text')->rule('required');
+        $edit->add('employee.employee_id','Employee ID <span class="text-danger">*</span>','autocomplete')
+            ->search(array('employee_id'))
+            ->rule('required|exists:employees,id');
 
-        //$edit->add('description','Description', 'textarea');
+        $edit->add('basic','Basic <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('house_rent','House Rent <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('m_a','M/A <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('t_a','T/A <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('f_a','F/A <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('gross','Gross Salry <span class="text-danger">*</span>','text')
+            ->rule('required');
+        $edit->add('ot_rate','Over Time Rate <span class="text-danger">*</span>','text')
+            ->rule('required');
+
+        $edit->add('type','Salary Type <span class="text-danger">*</span>','select')
+            ->options([''=>"Select Type",'1'=>'Bank','2'=>'Cash'])
+            ->rule('required');
 
         $edit->build();
-        return $edit->view('line.edit', compact('edit'));
+        return $edit->view('salary.structure.edit', compact('edit'));
 
 
     }
