@@ -84,6 +84,7 @@ Route::group(['middleware' => 'acl'], function () {
 
     //Salary Structure
     Route::get('/salary/structure', 'SalaryStructureController@index');
+    Route::any('/salary/structure/edit', 'SalaryStructureController@edit');
     Route::any('/leavetype/edit', 'LeaveTypeController@edit');
     Route::get('/leavetype/json/{leavetype_id}','LeaveTypeController@getLists')->where('id', '[0-9]+');
 

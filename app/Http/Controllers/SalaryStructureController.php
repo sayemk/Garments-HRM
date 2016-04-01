@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use Zofe\Rapyd\DataEdit\DataEdit;
 
 
 class SalaryStructureController extends Controller
@@ -55,8 +55,8 @@ class SalaryStructureController extends Controller
         $grid->add('type','Salary Mode',true)->cell(function($value){
             return $value==1 ? 'Bank' : 'Cash';
         });
-        $grid->edit('salary/structure/edit', 'Action','modify|delete');
-        $grid->link('alary/structure/edit',"New Salary Structure", "TR",['class' =>'btn btn-success']);
+        $grid->edit('structure/edit', 'Action','modify|delete');
+        $grid->link('salary/structure/edit',"New Salary Structure", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('employee_id','ASC');
         return  view('salary.structure.index', compact('grid', 'filter'));
     }
@@ -99,9 +99,30 @@ class SalaryStructureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $edit = \DataEdit::source(new SalaryStructure());
+        $edit->link("salary/structure","Salary Structure", "TR",['class' =>'btn btn-primary'])->back();
+//        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
+//            ->options([''=>'Select Branch'])
+//            ->options(Branch::lists("name", "id")->all())
+//            ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+//        $edit->add('department_id','Department <span class="text-danger">*</span>','select')
+//            ->options([''=>"Select Department"])
+//            ->options(Department::lists('name','id')->all())
+//            ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+//
+//        $edit->add('section_id','Section <span class="text-danger">*</span>','select')
+//            ->options([''=>"Select Department"])
+//            ->options(Section::lists('name','id')->all());
+//        $edit->add('name','Line Name <span class="text-danger">*</span>', 'text')->rule('required');
+
+        //$edit->add('description','Description', 'textarea');
+
+        $edit->build();
+        return $edit->view('line.edit', compact('edit'));
+
+
     }
 
     /**
