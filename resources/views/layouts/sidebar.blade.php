@@ -4,10 +4,10 @@
    
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu"> 
-     
+
       <li class=" @if($parent_menu == 'setting') active @endif treeview">
         <a href="#">
-          <i class="fa fa-gear"></i> <span>Settings </span>
+          <i class="fa fa-gear"></i> <span>Company Basic Settings </span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="  treeview-menu">
@@ -46,7 +46,7 @@
           <i class="fa fa-sticky-note"></i> <span>Leaves </span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
-        <ul class="  treeview-menu">
+        <ul class="treeview-menu">
           
           <li class="@if($active == 'leavetype') active @endif">
             <a href="{{ url('leavetype') }}"><i class="fa fa-circle-o"></i>Leaves Type</a>
@@ -61,12 +61,41 @@
           <li class="@if($active == 'leaveapplication') active @endif">
             <a href="{{ url('leaveapplication') }}"><i class="fa fa-circle-o"></i>Leave Application</a>
           </li>
-         
         </ul>
-      </li> 
-         
-          
-     
+      </li>
+
+      <li class=" @if($parent_menu == 'Attendance Setting') active @endif treeview">
+        <a href="#">
+         <i class="fa fa-user"></i> <span>Attendance </span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="  treeview-menu">
+        
+          <li class="@if($active == 'attendance') active @endif">
+            <a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i>Manual Attendance</a>
+          </li>
+          <li class="@if($active == 'upload') active @endif">
+            <a href="{{ url('attendance/upload') }}"><i class="fa fa-circle-o"></i>Upload Attendance</a>
+          </li>
+
+        </ul>
+      </li>
+
+      <li class=" @if($parent_menu == 'Setting') active @endif treeview">
+
+        <a href="#">
+          <i class="fa fa-gear"></i> <span>All System Setting</span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="  treeview-menu">
+           <li class="@if($active == 'setting') active @endif">
+            <a href="{{ url('setting') }}"><i class="fa fa-circle-o"></i>Setting</a>
+          </li>
+        </ul>
+
+      </li>
+   
     </ul>
   </section>
 <!-- /.sidebar -->

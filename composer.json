@@ -11,7 +11,8 @@
         "laravelcollective/html": "5.1.*",
 	    "aginev/acl": "1.1.*",
         "doctrine/dbal": "2.5.*",
-        "nesbot/carbon": "~1.18"
+        "nesbot/carbon": "~1.18",
+        "barryvdh/laravel-ide-helper": "^2.1"
 	
     },
     "require-dev": {

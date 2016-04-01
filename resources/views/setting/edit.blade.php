@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Branch')
+@section('title','setting')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'branch','parent_menu'=>'settings'])
+   @include('layouts.sidebar',['active' =>'setting','parent_menu'=>'Setting'])
 
 @endsection
 
@@ -12,7 +12,7 @@
          
         	<div class="box box-primary">
             
-              <h3 class="box-title padding-left">Branch </h3>
+              <h3 class="box-title padding-left">Attendance</h3>
            
               <div class="box-body">
                 
@@ -22,26 +22,20 @@
 	                  
 	                  {!! $edit->message !!}	                 
 	                  {!! $edit->header !!}
-	                 
-	                    <div class="form-group">
+
+
+	                  <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('organization_id') !!}
+	                       {!! $edit->render('string') !!}
 	                      </div>
 	                    </div>
-	                    <div class="form-group">
+	                     <div class="form-group">
 	                     
 	                      <div class="col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('name') !!}
+	                        {!! $edit->render('value') !!}
 	                      </div>
-	                    </div>
-	                    <div class="form-group">
-	                      
-	                      <div class=" col-sm-offset-2 col-sm-12">
-	                        {!! $edit->render('address') !!}
-	                      </div>
-	                    </div>
-	                     	                                        
+	                    </div>                                        
 	                    <div class="form-group">
 	                      <div class="col-sm-offset-2 col-sm-9">
 	                        {!! $edit->footer !!}
@@ -69,16 +63,13 @@
         
         rules: {
             
-            name: {
+            string: {
                 required: true,
             },
-            address: {
-               required: true
+            value: {
+               required: true,
             },
-            organization_id: {
-            	required: true,
-            	number:true
-            }
+            
 
         },
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmployeeIdInEmployeesTable extends Migration
+class AddSectionIdToDesignationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddEmployeeIdInEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('employee_id',10)->after('id')->unique();
+        Schema::table('designations', function (Blueprint $table) {
+            $table->integer('section_id')->unsigned()->after('department_id');
         });
     }
 
@@ -24,8 +24,8 @@ class AddEmployeeIdInEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->dropColumn('employee_id');
+        Schema::table('designations', function (Blueprint $table) {
+            $table->dropColumn('section_id');
         });
     }
 }
