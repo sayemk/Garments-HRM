@@ -7,6 +7,7 @@ use App\Model\Grade;
 use App\Model\Branch;
 use App\Model\Department;
 use App\Model\Designation;
+use App\Model\Section;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -22,12 +23,12 @@ class GradeController extends Controller
         //
         //$grid = \DataGrid::source(Grade::with('designation'));
 
-        $filter = \DataFilter::source(grade::with('designation.department.branch'));
+        $filter = \DataFilter::source(grade::with('designation','department','branch','section'));
 
-        $filter->add('designation.department.branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
+        $filter->add('branch.name','Branch', 'select')->options([''=>'Select Branch'])->options(Branch::lists("name", "id")->all())
                     ->scope(function($query){
-                        if (!empty(\Input::get('department_branch_name'))) {
-                            $branch = Branch::where(['id'=>\Input::get('designation_department_branch_name')])->with('departments')->get();
+                        if (!empty(\Input::get('branch_name'))) {
+                            $branch = Branch::where(['id'=>\Input::get('branch_name')])->with('departments')->get();
                             $departments = array_pluck($branch[0]->departments->toArray(), 'id');
                             return $query->whereIn('department_id',$departments);
                         } else {
@@ -36,22 +37,42 @@ class GradeController extends Controller
                         
 
                     })
-                    ->attributes(['data-target'=>'designation_department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
+                    ->attributes(['data-target'=>'department_name','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
         
-        $filter->add('designation.department.name','Department','select')
+        $filter->add('department.name','Department','select')
             ->options([''=>"--Select--"])
-            ->options(Department::where('branch_id', \Input::get('designation.department_branch_name'))->lists("name", "id"))
+            ->options(Department::where('branch_id', \Input::get('department_name'))->lists("name", "id"))
             ->scope(function($query){
-                if (!empty(\Input::get('designation_department_name')) && trim(\Input::get('designation_department_name')) !="--Select--") {
+                if (!empty(\Input::get('department_name')) && trim(\Input::get('department_name')) !="--Select--") {
 
-                   return $query->where('_department_id',\Input::get('department_name'));
+                   return $query->where('department_id',\Input::get('department_name'));
 
                 }else{
                     return $query;
                 }
-            });
+            })
+            ->attributes(['data-target'=>'section_name','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
+        
+        
+        $filter->add('section.name','Section','select')
 
-            
+            ->options([''=>"Select Section"])
+            ->options(Section::where('department_id', \Input::get('department'))->lists("name", "id"))
+            ->scope(function($query){
+                if (!empty(\Input::get('section_name')) && trim(\Input::get('section_name')) !="--Select--") {
+
+                   return $query->where('section_id',\Input::get('section_name'));
+
+                }else{
+                    return $query;
+                }
+            })
+            ->attributes(['data-target'=>'designation_name','data-source'=>url('/designation/json'), 'onchange'=>"populateSelect(this)"]);
+
+        $filter->add('designation.name','Designation','select')
+            ->options([''=>"Select Designation"])
+            ->options(Designation::where('section_id', \Input::get('section'))->lists("name", "id"));
+
         $filter->submit('search');
         $filter->reset('reset');
         $filter->build();
@@ -78,11 +99,11 @@ class GradeController extends Controller
 
         });
 
-        $grid->add('{{ $designation->department->branch->name }}','Branch','branch_id');
-        $grid->add('{{ $designation->department->name }}','Department','department_id');
+        $grid->add('{{ $branch->name }}','Branch','branch_id');
+        $grid->add('{{ $department->name }}','Department','department_id');
+        $grid->add('{{ @$section->name }}','Section Name','section_id');
         $grid->add('{{ $designation->name }}','Designation','designation_id');
         $grid->add('name','Grade Name',true); 
-        //$grid->add('address','Adress'); 
         $grid->edit('grade/edit', 'Edit','show|modify|delete');
         $grid->link('grade/edit',"New Grade", "TR",['class' =>'btn btn-success']);
         $grid->orderBy('name','ASC');
@@ -90,7 +111,7 @@ class GradeController extends Controller
         $grid->paginate(10);
 
 
-        return  view('grade.index', compact('grid'));
+        return  view('grade.index', compact('grid','filter'));
     }
 
     /**
@@ -144,8 +165,12 @@ class GradeController extends Controller
         $edit->add('department_id','Department <span class="text-danger">*</span>','select')
              ->options([''=>"Select Department"])
              ->options(Department::lists('name','id')->all())
-             ->attributes(['data-target'=>'designation_id','data-source'=>url('/designation/json'), 'onchange'=>"populateSelect(this)"]);
+             ->attributes(['data-target'=>'section_id','data-source'=>url('/section/json'), 'onchange'=>"populateSelect(this)"]);
 
+        $edit->add('section_id','Section <span class="text-danger">*</span>','select')
+             ->options([''=>"Select Section"])
+             ->options(Department::lists('name','id')->all())
+             ->attributes(['data-target'=>'designation_id','data-source'=>url('/designation/json'), 'onchange'=>"populateSelect(this)"]);
 
         $edit->add('designation_id','Designation <span class="text-danger">*</span>','select')
              ->options([''=>"Select Designation"])

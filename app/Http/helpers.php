@@ -53,3 +53,53 @@ function leavePayable($flag)
 
 }
 
+function durationCalc($inTime, $outTime){
+	$inTime = \Carbon\Carbon::createFromFormat("H:i:s",$inTime);
+	$outTime = \Carbon\Carbon::createFromFormat("H:i:s",$outTime);
+
+	$seconds = $inTime->diffInSeconds($outTime);
+
+	return gmdate("H:i:s",$seconds);
+}
+
+function overtimeCalc($duration, $officeHour){
+	$duration = explode(":",$duration);
+
+	if ($duration[0] >= $officeHour){
+		$hour = $duration[0] - $officeHour;
+
+		return "$hour:$duration[1]:$duration[2]";
+	}else{
+		return "00:00:00";
+	}
+}
+
+function lateTimeCalc($inTime, $bufferTime)
+{
+	$inTime = strtotime($inTime);
+
+	$bufferTime = strtotime($bufferTime);
+
+	$late = $inTime-$bufferTime;
+
+
+	if ($late>0){
+		return gmdate("H:i:s",$late);
+	}else {
+		return "00:00:00";
+	}
+
+
+}
+
+function spanClass($flag)
+{
+	return ($flag)? 'text-green' : 'text-danger';
+}
+
+function uploadMessage($flag){
+	return ($flag)? 'Success' : 'Failed';
+}
+
+
+

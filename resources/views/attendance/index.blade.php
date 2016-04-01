@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title','Grade')
+@section('title','attendance')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'Grade','parent_menu'=>'setting'])
+   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance Setting'])
 
 @endsection
 
@@ -12,10 +12,10 @@
          
   <div class="box box-primary">
             
-      <h3 class="box-title padding-left">Grade </h3>
+      <h3 class="box-title padding-left">Attendance</h3>
    
       <div class="box-body">
-         {!! $filter !!}
+          {!! $filter !!}
          	{!! $grid !!}
       </div>
                 
@@ -23,10 +23,5 @@
 			<div class="box-footer clearfix">
 		                  
       </div>
-  </div>  
-
-    
-            
-          
-          
+  </div>          
 @endsection

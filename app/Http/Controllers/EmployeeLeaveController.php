@@ -66,6 +66,7 @@ class EmployeeLeaveController extends Controller
         $edit->add('employee.employee_id','Employee ID <span class="text-danger">*</span>','autocomplete')
                 ->search(array('employee_id'))
                 ->rule('required|exists:employees,id');
+                
         $edit->add('leavetype_id','Leave Type <span class="text-danger">*</span>','select')
              ->options([''=>'Selet Type'])   
              ->options(LeaveType::lists('name','id')->all())
