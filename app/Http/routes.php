@@ -83,6 +83,14 @@ Route::group(['middleware' => 'acl'], function () {
 	Route::get('auth/register','Auth\AuthController@getRegister');
 	Route::post('auth/register','Auth\AuthController@postRegister');
 
+
+    //Salary Structure
+    Route::get('/salary/structure', 'SalaryStructureController@index');
+    Route::any('/salary/structure/edit', 'SalaryStructureController@edit');
+    Route::get('/salary/create','SalaryController@create');
+    Route::post('/salary/store','SalaryController@store');
+
+    //Attendance
     Route::get('/attendance','AttendanceController@index');
     Route::any('/attendance/edit','AttendanceController@edit');
     Route::get('/attendance/upload','AttendanceController@create');
@@ -90,6 +98,7 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/setting','SettingController@index');
     Route::any('/setting/edit','SettingController@edit');
+
 
 });
 

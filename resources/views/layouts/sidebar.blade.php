@@ -64,6 +64,24 @@
         </ul>
       </li>
 
+
+      <li class=" @if($parent_menu == 'salary') active @endif treeview">
+        <a href="#">
+          <i class="fa fa-money"></i> <span>Salary </span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="  treeview-menu">
+
+          <li class="@if($active == 'structure') active @endif">
+            <a href="{{ url('salary/structure') }}"><i class="fa fa-circle-o"></i>Salary Structures</a>
+          </li>
+          <li class="@if($active == 'structure') active @endif">
+            <a href="{{ url('salary/create') }}"><i class="fa fa-circle-o"></i>Salary Generation</a>
+          </li>
+
+        </ul>
+      </li>
+
       <li class=" @if($parent_menu == 'Attendance Setting') active @endif treeview">
         <a href="#">
          <i class="fa fa-user"></i> <span>Attendance </span>
@@ -76,6 +94,7 @@
           </li>
           <li class="@if($active == 'upload') active @endif">
             <a href="{{ url('attendance/upload') }}"><i class="fa fa-circle-o"></i>Upload Attendance</a>
+
           </li>
 
         </ul>
@@ -96,6 +115,7 @@
 
       </li>
    
+
     </ul>
   </section>
 <!-- /.sidebar -->
