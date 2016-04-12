@@ -101,6 +101,10 @@ Route::group(['middleware' => 'acl'], function () {
     Route::get('/setting','SettingController@index');
     Route::any('/setting/edit','SettingController@edit');
 
+    Route::group(['prefix' => 'report'], function () {
+        Route::get('salary', 'Reports\SalaryController@index');
+    });
+
 
 });
 
