@@ -141,7 +141,7 @@ class SalaryController extends Controller
                 /*Calculate OT HOUR*/
                 $ot_hour = $attendances->sum('overtime');
 
-                $ot_amount = $ot_hour * $salaryStructure->ot_rate;
+                $ot_amount = floor($ot_hour * $salaryStructure->ot_rate);
 
                 $salaryPerDay = $salaryStructure->basic/$noOfDaysInMonth;
 
@@ -171,9 +171,14 @@ class SalaryController extends Controller
                 $salaryRegister->month = $request->month;
                 $salaryRegister->year = $request->year;
 
+                $salaryRegister->days_of_month = $noOfDaysInMonth;
+                $salaryRegister->present_days = $totalAttended;
+                $salaryRegister->no_holidays = $holidays;
+                $salaryRegister->leave_days = $leaveDays;
+
                 $salaryRegister->save();
 
-                echo 'if===';
+
 
 
             } else{
@@ -211,7 +216,7 @@ class SalaryController extends Controller
                 /*Calculate OT HOUR*/
                 $ot_hour = $attendances->sum('overtime');
 
-                $ot_amount = $ot_hour * $salaryStructure->ot_rate;
+                $ot_amount = floor($ot_hour * $salaryStructure->ot_rate);
 
                 $salaryPerDay = $salaryStructure->gross/$noOfDaysInMonth;
 
@@ -241,14 +246,18 @@ class SalaryController extends Controller
                 $salaryRegister->month = $request->month;
                 $salaryRegister->year = $request->year;
 
+                $salaryRegister->days_of_month = $noOfDaysInMonth;
+                $salaryRegister->present_days = $totalAttended;
+                $salaryRegister->no_holidays = $holidays;
+                $salaryRegister->leave_days = $leaveDays;
+
                 $salaryRegister->save();
 
-                echo  $totalAttended;
-                echo "==else===";
+
             }
         }
 
-        return $noOfDaysInMonth;
+        return redirect()->back();
     }
 
     public function edit(){

@@ -52,13 +52,14 @@ class SalaryController extends Controller
                         return $query;
                     }
                 })
-                ->get();
+                ->with('employee.designations','employee.grade','salaryStructure')
+                ->paginate(config('hrm.report_row_per_page'));
 
         
-        return $salaries;
+        //return $salaries;
 
 
-        return view('report.salary.index',compact('filter'));
+        return view('report.salary.index',compact('filter','salaries'));
     }
 
     /**
