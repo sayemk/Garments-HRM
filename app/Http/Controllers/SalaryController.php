@@ -17,6 +17,56 @@ use App\Http\Controllers\Controller;
 
 class SalaryController extends Controller
 {
+
+    /**
+     *
+     */
+    public function index()
+    {
+        $filter = \DataFilter::source(SalaryRegister::with('employee'));
+
+        $filter->add('employee.employee_id','Employee','tags');
+        $filter->add('month','Month','select')->options([''=>'Select Month'])
+            ->options(months());
+        $filter->add('year','Year','date')->format('Y');
+
+        $filter->submit('search');
+        $filter->reset('reset');
+        $filter->build();
+
+        $grid = \DataGrid::source($filter);
+
+        $grid->add('id','S_No', true)->cell(function($value, $row){
+            $pageNumber = (\Input::get('page')) ? \Input::get('page') : 1;
+
+            static $serialStart =0;
+            ++$serialStart;
+            return ($pageNumber-1)*10 +$serialStart;
+        });
+
+        $grid->add('{{$employee->employee_id}}','Employee');
+        $grid->add('month','Month',true);
+        $grid->add('year','Year',true);
+        $grid->add('gross','Gross',true);
+        $grid->add('abs_days','Absent',true);
+        $grid->add('net_salary','Net Salary',true);
+        $grid->add('ot_amount','OT Amount',true);
+        $grid->add('payable','Payable',true);
+        $grid->add('adv_amount','Advance',true);
+        $grid->add('stamp','Stamp',true);
+        $grid->add('net_paid','Net Paid',true);
+
+
+        $grid->edit('/salary/register/edit', 'Action','modify');
+
+        $grid->orderBy('year','DESC');
+
+        $grid->paginate(20);
+
+
+        return  view('salary.register.index', compact('grid','filter'));
+    }
+
     /**
      * @return mixed
      */
@@ -199,5 +249,27 @@ class SalaryController extends Controller
         }
 
         return $noOfDaysInMonth;
+    }
+
+    public function edit(){
+        $edit = \DataEdit::source(new SalaryRegister());
+
+        $edit->link("salary/register","Salary Register", "TR",['class' =>'btn btn-primary'])->back();
+
+        $edit->add('employee_id','Employee <span style="color:red;">*</span>','select')
+            ->options(Employee::lists("employee_id", "id")->all())
+            ->mode('readonly');
+
+
+        $edit->add('month','Month <span style="color:red;">*</span>', 'text')->mode('readonly');
+        $edit->add('year','Year <span style="color:red;">*</span>', 'text')->mode('readonly');
+
+        $edit->add('adv_amount','Advance ', 'text');
+        $edit->add('net_paid','Net Paid', 'text');
+
+
+        $edit->build();
+
+        return $edit->view('salary.register.edit', compact('edit'));
     }
 }

@@ -87,6 +87,8 @@ Route::group(['middleware' => 'acl'], function () {
     //Salary Structure
     Route::get('/salary/structure', 'SalaryStructureController@index');
     Route::any('/salary/structure/edit', 'SalaryStructureController@edit');
+    Route::get('/salary/register', 'SalaryController@index');
+    Route::any('/salary/register/edit', 'SalaryController@edit');
     Route::get('/salary/create','SalaryController@create');
     Route::post('/salary/store','SalaryController@store');
 

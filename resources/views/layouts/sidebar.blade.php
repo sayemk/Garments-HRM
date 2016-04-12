@@ -75,6 +75,9 @@
           <li class="@if($active == 'structure') active @endif">
             <a href="{{ url('salary/structure') }}"><i class="fa fa-circle-o"></i>Salary Structures</a>
           </li>
+          <li class="@if($active == 'register') active @endif">
+            <a href="{{ url('salary/register') }}"><i class="fa fa-circle-o"></i>Salary Register</a>
+          </li>
           <li class="@if($active == 'structure') active @endif">
             <a href="{{ url('salary/create') }}"><i class="fa fa-circle-o"></i>Salary Generation</a>
           </li>
