@@ -43,7 +43,7 @@ function employeeStatus($status)
 	} else if ($status == 2) {
 		return 'New';
 	} else {
-		return 'Inactive';
+		return 'Resign';
 	}
 
 }
