@@ -49,3 +49,6 @@ audio{
 	-o-transform: rotate(270deg);
 	transform: rotate(270deg);
 }
+.pdf-font-size {
+	font-size: 8px;
+}

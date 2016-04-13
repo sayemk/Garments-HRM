@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
+
 class SalaryController extends Controller
 {
     /**
@@ -67,9 +68,46 @@ class SalaryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function pdf()
     {
-        //
+        $salaries = SalaryRegister::where(function($query){
+            if(!empty(Input::get('month')))
+            {
+                return $query->where('month',Input::get('month'));
+            }else{
+                return $query;
+            }
+        })->where(function($query){
+            if(!empty(Input::get('year')))
+            {
+                return $query->where('year',Input::get('year'));
+            }else{
+                return $query;
+            }
+        })->where(function($query){
+            if(!empty(Input::get('employee_employee_id')))
+            {
+                return $query->where('employee_id',Input::get('employee_employee_id'));
+            }else{
+                return $query;
+            }
+        })
+            ->with('employee.designations','employee.grade','salaryStructure')
+            ->get();
+
+//        $pdf = \PDF::loadView('report.salary.pdf', compact('filter','salaries'));
+//        return $pdf->download('salaryRegister.pdf');
+
+        \Excel::create('Salary_'.date('d-m-Y'), function($excel) use($salaries) {
+            $excel->setTitle('Our new awesome title');
+            $excel->sheet('New sheet', function($sheet) use($salaries) {
+
+                $sheet->loadView('report.salary.pdf')->with('salaries',$salaries);
+
+            })->download('xlsx');;
+
+        });
+
     }
 
     /**
@@ -80,7 +118,7 @@ class SalaryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
