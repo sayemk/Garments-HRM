@@ -129,6 +129,9 @@
           <li class="@if($active == 'salary') active @endif">
             <a href="{{ url('report/salary') }}"><i class="fa fa-circle-o"></i>Salary</a>
           </li>
+          <li class="@if($active == 'attendance') active @endif">
+            <a href="{{ url('report/attendance') }}"><i class="fa fa-circle-o"></i>Attendance</a>
+          </li>
         </ul>
 
       </li>
