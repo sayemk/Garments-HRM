@@ -129,7 +129,7 @@ class SalaryController extends Controller
                 $salaryStructure = SalaryStructure::where('employee_id',$employee->id)->first();
 
                 if($employee->type ==1){
-                    if(!$absent && $lateCount<3){
+                    if(!$absent && $lateCount<3 && !$leaveDays){
                         $bonusSetting = Setting::where('string','attendance_bonus')->first();
                         $attendanceBonus = $bonusSetting->value;
                     }else{
@@ -204,7 +204,7 @@ class SalaryController extends Controller
                 $salaryStructure = SalaryStructure::where('employee_id',$employee->id)->first();
 
                 if($employee->type ==1){
-                    if(!$absent && $lateCount<3){
+                    if(!$absent && $lateCount<3 && !$leaveDays){
                         $bonusSetting = Setting::where('string','attendance_bonus')->first();
                         $attendanceBonus = $bonusSetting->value;
                     }else{

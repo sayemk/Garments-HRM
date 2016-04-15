@@ -1,0 +1,30 @@
+#jquery_print {
+    /*font-size: 11px;*/
+    line-height: 0px;
+
+}
+
+.table{
+    padding: 5px 0px 0px 5px;
+
+    font-size: 11px;
+}
+.table td{
+    text-align: right;
+}
+.table th td{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 0;
+    padding-right: 0;
+}
+
+.table tr{
+    line-height: 12px;
+}
+
+#jquery_print >table>th{
+    line-height: 10px;
+    font-size: 7px;
+
+}

@@ -104,6 +104,8 @@ Route::group(['middleware' => 'acl'], function () {
     Route::group(['prefix' => 'report'], function () {
         Route::get('salary', 'Reports\SalaryController@index');
         Route::get('salary/download', 'Reports\SalaryController@download');
+        Route::get('payslip','Reports\PayslipController@index');
+        Route::get('payslip/download', 'Reports\PayslipController@download');
         Route::get('attendance','Reports\AttendanceController@index');
         Route::get('attendance/download', 'Reports\AttendanceController@download');
     });
