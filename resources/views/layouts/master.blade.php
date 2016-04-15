@@ -24,6 +24,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ url('/assets/css/skins/_all-skins.min.css') }}">
     <link rel="stylesheet" href="{{ url('/assets/css/style.css') }}">
+    <link rel="stylesheet" media="print" href="{{ url('/assets/css/print.css') }}">
 
 
     {!! Rapyd::styles() !!}

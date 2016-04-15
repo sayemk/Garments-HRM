@@ -103,7 +103,7 @@ class AttendanceController extends Controller
 
                 $sheet->loadView('report.attendance.download',compact('employees','noOfDaysInMonth','allDates','startDay','endDay'));
 
-            })->download('xlsx');;
+            })->download('xlsx');
 
         });
 
