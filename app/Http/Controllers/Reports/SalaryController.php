@@ -68,7 +68,7 @@ class SalaryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pdf()
+    public function download()
     {
         $salaries = SalaryRegister::where(function($query){
             if(!empty(Input::get('month')))
