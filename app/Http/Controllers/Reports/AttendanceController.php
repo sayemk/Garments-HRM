@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reports;
 
 use App\Model\Attendance;
 use App\Model\Employee;
+use App\Model\Holiday;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,13 +40,8 @@ class AttendanceController extends Controller
         $startDay = new Carbon('first day of '.$month.' '.$year );
         $endDay = new Carbon('last day of '.$month.' '.$year );
         $noOfDaysInMonth = Carbon::create($year,$monthCarbon)->daysInMonth;
+//        $holidays = Holiday::whereBetween('date',[$startDay,$endDay])->get();
         $employees = Employee::where('status','!=','3')
-                    ->with(['attendance'=>function($query) use($startDay,$endDay){
-                        return $query->whereBetween('date',[$startDay,$endDay]);
-                    }])
-                    ->with(['leave'=>function($query) use($startDay,$endDay){
-                        return $query->whereBetween('start_day',[$startDay,$endDay]);
-                    }])
                     ->where(function($query){
                         if(!empty(Input::get('employee_id')))
                         {
@@ -56,7 +52,10 @@ class AttendanceController extends Controller
                     })
                     ->paginate(config('hrm.report_row_per_page'));
 
-        return view('report.attendance.index',compact('filter','employees','noOfDaysInMonth'));
+        $allDates = createDateRangeArray($startDay,$endDay);
+
+        //return $employees;
+        return view('report.attendance.index',compact('filter','employees','noOfDaysInMonth','allDates','startDay','endDay'));
     }
 
     /**
