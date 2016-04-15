@@ -17,7 +17,7 @@
     <div class="box-body table-responsive no-padding">
 
         {!! $filter !!}
-        <button id="report_download_btn" class="btn btn-primary pull-right" data-link="/report/salary/download">Download Report</button>
+        <button id="report_download_btn" class="btn btn-primary pull-right" data-link="/report/attendance/download">Download Report</button>
         <br>
         <table class="table table-bordered">
             <thead>

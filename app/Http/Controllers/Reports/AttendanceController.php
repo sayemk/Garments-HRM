@@ -63,64 +63,51 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function download()
     {
-        //
+        $filter = \DataFilter::source(Attendance::class);
+
+        $filter->add('employee_id','Employee','tags');
+        $filter->add('month','Month','select')->options([''=>'Select Month'])
+            ->options(months());
+        $filter->add('year','Year','date')->format('Y');
+
+        $filter->submit('search');
+        $filter->reset('reset');
+        $filter->build();
+
+        $month = (!empty(Input::get('month'))) ? Input::get('month') : date('M');
+        $monthCarbon = (!empty(Input::get('month'))) ? Input::get('month') : date('m');
+        $year = (!empty(Input::get('year'))) ? Input::get('year') : date('Y');
+
+        $startDay = new Carbon('first day of '.$month.' '.$year );
+        $endDay = new Carbon('last day of '.$month.' '.$year );
+        $noOfDaysInMonth = Carbon::create($year,$monthCarbon)->daysInMonth;
+//        $holidays = Holiday::whereBetween('date',[$startDay,$endDay])->get();
+        $employees = Employee::where('status','!=','3')
+            ->where(function($query){
+                if(!empty(Input::get('employee_id')))
+                {
+                    return $query->where('employee_id',Input::get('employee_id'));
+                }else{
+                    return $query;
+                }
+            })
+            ->get();
+
+        $allDates = createDateRangeArray($startDay,$endDay);
+
+        \Excel::create('Attendance_sheet_'.date('d-m-Y'), function($excel) use($employees,$noOfDaysInMonth,$allDates,$startDay,$endDay) {
+            $excel->setTitle('Our new awesome title');
+            $excel->sheet('New sheet', function($sheet) use($employees,$noOfDaysInMonth,$allDates,$startDay,$endDay) {
+
+                $sheet->loadView('report.attendance.download',compact('employees','noOfDaysInMonth','allDates','startDay','endDay'));
+
+            })->download('xlsx');;
+
+        });
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

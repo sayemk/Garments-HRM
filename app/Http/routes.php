@@ -105,6 +105,7 @@ Route::group(['middleware' => 'acl'], function () {
         Route::get('salary', 'Reports\SalaryController@index');
         Route::get('salary/download', 'Reports\SalaryController@download');
         Route::get('attendance','Reports\AttendanceController@index');
+        Route::get('attendance/download', 'Reports\AttendanceController@download');
     });
 
 
