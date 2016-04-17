@@ -110,6 +110,8 @@ Route::group(['middleware' => 'acl'], function () {
         Route::get('attendance/download', 'Reports\AttendanceController@download');
     });
 
+    Route::controller('user', 'UserController');
+
 
 });
 

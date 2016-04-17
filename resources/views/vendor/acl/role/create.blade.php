@@ -4,7 +4,7 @@
 @section('title','Role')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'admin'])
+@include('layouts.sidebar',['active' =>'role','parent_menu'=>'admin'])
 
 @endsection
 
