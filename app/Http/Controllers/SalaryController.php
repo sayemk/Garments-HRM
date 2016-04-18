@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class SalaryController extends Controller
 {
@@ -112,6 +113,7 @@ class SalaryController extends Controller
                     ->whereBetween('date',[$startDay,$endDay])
                     ->get();
                 //Count the attended date
+
                 $totalAttended = $attendances->count();
 
                 /*Employee's approved Leaves*/
@@ -139,9 +141,26 @@ class SalaryController extends Controller
                     $attendanceBonus = 0;
                 }
                 /*Calculate OT HOUR*/
-                $ot_hour = $attendances->sum('overtime');
+                $ot_hour = 0;
+                $extra_ot_hour = 0;
+                if ($employee->type==1)
+                {
+                    foreach ($attendances as $attendance)
+                    {
+                        echo $attendance->employee_id.'=='.$attendance->overtime.'<br>';
+                        if($attendance->overtime>2)
+                        {
+                            $ot_hour +=2;
+                            $extra_ot_hour =$extra_ot_hour+($attendance->overtime-2);
+                        }else{
+                            $ot_hour +=$attendance->overtime;
+                        }
+                    }
+                }
+
 
                 $ot_amount = floor($ot_hour * $salaryStructure->ot_rate);
+                $extra_ot_amount = floor($extra_ot_hour * $salaryStructure->ot_rate);
 
                 $salaryPerDay = $salaryStructure->basic/$noOfDaysInMonth;
 
@@ -164,6 +183,8 @@ class SalaryController extends Controller
                 $salaryRegister->ot_rate = $salaryStructure->ot_rate;
                 $salaryRegister->ot_hours = $ot_hour;
                 $salaryRegister->ot_amount = $ot_amount;
+                $salaryRegister->extra_ot_hour = $extra_ot_hour;
+                $salaryRegister->extra_ot_amount = $extra_ot_amount;
                 $salaryRegister->payable = $salaryRegister->net_salary+$attendanceBonus+$ot_amount;
                 $salaryRegister->adv_amount = 0;
                 $salaryRegister->stamp =10;
@@ -214,9 +235,28 @@ class SalaryController extends Controller
                     $attendanceBonus = 0;
                 }
                 /*Calculate OT HOUR*/
-                $ot_hour = $attendances->sum('overtime');
+                $ot_hour = 0;
+                $extra_ot_hour = 0;
+                if ($employee->type==1)
+                {
+                    foreach ($attendances as $attendance)
+                    {
+                        echo $attendance->employee_id.'=='.$attendance->overtime.'<br>';
+                        if($attendance->overtime>2)
+                        {
+                            $ot_hour +=2;
+                            $extra_ot_hour =$extra_ot_hour+($attendance->overtime-2);
+                        }else{
+                            $ot_hour +=$attendance->overtime;
+                        }
+                    }
+                }
+
 
                 $ot_amount = floor($ot_hour * $salaryStructure->ot_rate);
+                $extra_ot_amount = floor($extra_ot_hour * $salaryStructure->ot_rate);
+
+
 
                 $salaryPerDay = $salaryStructure->gross/$noOfDaysInMonth;
 
@@ -239,6 +279,8 @@ class SalaryController extends Controller
                 $salaryRegister->ot_rate = $salaryStructure->ot_rate;
                 $salaryRegister->ot_hours = $ot_hour;
                 $salaryRegister->ot_amount = $ot_amount;
+                $salaryRegister->extra_ot_hour = $extra_ot_hour;
+                $salaryRegister->extra_ot_amount = $extra_ot_amount;
                 $salaryRegister->payable = $salaryRegister->net_salary+$attendanceBonus+$ot_amount;
                 $salaryRegister->adv_amount = 0;
                 $salaryRegister->stamp =10;
@@ -256,7 +298,7 @@ class SalaryController extends Controller
 
             }
         }
-
+        Session::flash('system_message', "Salary Sheet created for ".months()[$request->month]."-$request->year");
         return redirect()->back();
     }
 

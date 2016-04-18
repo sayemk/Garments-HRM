@@ -108,6 +108,8 @@ Route::group(['middleware' => 'acl'], function () {
         Route::get('payslip/download', 'Reports\PayslipController@download');
         Route::get('attendance','Reports\AttendanceController@index');
         Route::get('attendance/download', 'Reports\AttendanceController@download');
+        Route::get('extra-ot','Reports\ExtraOtController@index');
+        Route::get('extra-ot/download', 'Reports\ExtraOtController@download');
     });
 
     Route::controller('user', 'UserController');
