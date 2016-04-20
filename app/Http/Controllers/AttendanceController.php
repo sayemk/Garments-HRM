@@ -102,16 +102,16 @@ class AttendanceController extends Controller
                     $attendance = Attendance::where(['employee_id'=>$employee->id,'date'=>$attRecord[1]])->first();
                     if (!empty($attendance))
                     {
-                        if (is_null($attendance->out_time)){
-                            $attendance->out_time = $attRecord[2];
-                            $attendance->duration = durationCalc($attendance->in_time,$attendance->out_time);
-                            $setting = Setting::where('string','office_duration_time')->first();
 
-                            $attendance->overtime = overtimeCalc($attendance->duration, $setting->value);
-                            if($attendance->save()){
-                                $flag = true;
-                            }
+                        $attendance->out_time = $attRecord[2];
+                        $attendance->duration = durationCalc($attendance->in_time,$attendance->out_time);
+                        $setting = Setting::where('string','office_duration_time')->first();
+
+                        $attendance->overtime = overtimeCalc($attendance->duration, $setting->value);
+                        if($attendance->save()){
+                            $flag = true;
                         }
+
                     } else{
                         
                         $attendance = new Attendance();
@@ -160,6 +160,7 @@ class AttendanceController extends Controller
      */
     public function edit(Request $request)
     {
+
         $flag = false;
 
         if (!empty(\Input::get('insert'))) {

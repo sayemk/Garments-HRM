@@ -83,6 +83,16 @@ Route::group(['middleware' => 'acl'], function () {
 	Route::get('auth/register','Auth\AuthController@getRegister');
 	Route::post('auth/register','Auth\AuthController@postRegister');
 
+
+    //Salary Structure
+    Route::get('/salary/structure', 'SalaryStructureController@index');
+    Route::any('/salary/structure/edit', 'SalaryStructureController@edit');
+    Route::get('/salary/register', 'SalaryController@index');
+    Route::any('/salary/register/edit', 'SalaryController@edit');
+    Route::get('/salary/create','SalaryController@create');
+    Route::post('/salary/store','SalaryController@store');
+
+    //Attendance
     Route::get('/attendance','AttendanceController@index');
     Route::any('/attendance/edit','AttendanceController@edit');
     Route::get('/attendance/upload','AttendanceController@create');
@@ -90,6 +100,16 @@ Route::group(['middleware' => 'acl'], function () {
 
     Route::get('/setting','SettingController@index');
     Route::any('/setting/edit','SettingController@edit');
+
+    Route::group(['prefix' => 'report'], function () {
+        Route::get('salary', 'Reports\SalaryController@index');
+        Route::get('salary/download', 'Reports\SalaryController@download');
+        Route::get('payslip','Reports\PayslipController@index');
+        Route::get('payslip/download', 'Reports\PayslipController@download');
+        Route::get('attendance','Reports\AttendanceController@index');
+        Route::get('attendance/download', 'Reports\AttendanceController@download');
+    });
+
 
 });
 

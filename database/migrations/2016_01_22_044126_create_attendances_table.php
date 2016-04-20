@@ -22,7 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->integer('overtime')->nullable();
             $table->integer('created_by')->unsigned();
             $table->integer('updated_by')->unsigned();
-            // $table->timestamps();
+            $table->timestamps();
             
             $table->index(['employee_id', 'date']);
         });

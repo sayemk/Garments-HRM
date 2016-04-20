@@ -145,13 +145,12 @@ class LineController extends Controller
     public function edit()
     {
 
-       $edit = \DataEdit::source(new line());
+        $edit = \DataEdit::source(new line());
         $edit->link("line","Lines", "TR",['class' =>'btn btn-primary'])->back();
-       $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
+        $edit->add('branch_id','Branch <span class="text-danger">*</span>','select')
              ->options([''=>'Select Branch'])
              ->options(Branch::lists("name", "id")->all())
              ->attributes(['data-target'=>'department_id','data-source'=>url('/department/json'), 'onchange'=>"populateSelect(this)"]);
-        
         $edit->add('department_id','Department <span class="text-danger">*</span>','select')
              ->options([''=>"Select Department"])
              ->options(Department::lists('name','id')->all())

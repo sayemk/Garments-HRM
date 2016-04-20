@@ -64,6 +64,27 @@
         </ul>
       </li>
 
+
+      <li class=" @if($parent_menu == 'salary') active @endif treeview">
+        <a href="#">
+          <i class="fa fa-money"></i> <span>Salary </span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="  treeview-menu">
+
+          <li class="@if($active == 'structure') active @endif">
+            <a href="{{ url('salary/structure') }}"><i class="fa fa-circle-o"></i>Salary Structures</a>
+          </li>
+          <li class="@if($active == 'register') active @endif">
+            <a href="{{ url('salary/register') }}"><i class="fa fa-circle-o"></i>Salary Register</a>
+          </li>
+          <li class="@if($active == 'structure') active @endif">
+            <a href="{{ url('salary/create') }}"><i class="fa fa-circle-o"></i>Salary Generation</a>
+          </li>
+
+        </ul>
+      </li>
+
       <li class=" @if($parent_menu == 'Attendance Setting') active @endif treeview">
         <a href="#">
          <i class="fa fa-user"></i> <span>Attendance </span>
@@ -76,6 +97,7 @@
           </li>
           <li class="@if($active == 'upload') active @endif">
             <a href="{{ url('attendance/upload') }}"><i class="fa fa-circle-o"></i>Upload Attendance</a>
+
           </li>
 
         </ul>
@@ -95,7 +117,29 @@
         </ul>
 
       </li>
+
+      <li class=" @if($parent_menu == 'reports') active @endif treeview">
+
+        <a href="#">
+          <i class="fa fa-gear"></i> <span>Reports</span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="  treeview-menu">
+          <li class="@if($active == 'salary') active @endif">
+            <a href="{{ url('report/salary') }}"><i class="fa fa-circle-o"></i>Salary</a>
+          </li>
+          <li class="@if($active == 'payslip') active @endif">
+            <a href="{{ url('report/payslip') }}"><i class="fa fa-circle-o"></i>Payslip</a>
+          </li>
+          <li class="@if($active == 'attendance') active @endif">
+            <a href="{{ url('report/attendance') }}"><i class="fa fa-circle-o"></i>Attendance</a>
+          </li>
+        </ul>
+
+      </li>
    
+
     </ul>
   </section>
 <!-- /.sidebar -->

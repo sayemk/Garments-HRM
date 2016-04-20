@@ -201,7 +201,7 @@ class EmployeeController extends Controller
         $edit->add('passport','Passport','text');
         $edit->add('birth_certificate','Birth Certificate','text');
         $edit->add('joining_date','Joining Date <span class="text-danger">*</span>','date')->format('d/m/Y', 'en')->rule('required');
-        $edit->add('status','Status <span class="text-danger">*</span>','select')->options(['1'=>'Active','2'=>'Inactive'])->rule('required');
+        $edit->add('status','Status <span class="text-danger">*</span>','select')->options(['1'=>'Active','2'=>'New','3'=>'Resigned'])->rule('required');
         $edit->add('image','Photo', 'image')->move('uploads/images/employees')->preview(80,80);
        
         $edit->build();
