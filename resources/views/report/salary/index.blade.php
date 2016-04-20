@@ -87,7 +87,7 @@
                         <td>{{ $salary->ot_rate }}</td>
                         <td>{{ $salary->ot_hours }}</td>
                         <td>{{ $salary->ot_amount }}</td>
-                        <td>{{ $salary->payable }}</td>
+                        <td>{{ floor($salary->payable) }}</td>
                         <td>{{ $salary->adv_amount }}</td>
                         <td>{{ $salary->stamp }}</td>
                         <td>{{ $salary->net_paid }}</td>

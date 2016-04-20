@@ -135,6 +135,9 @@
           <li class="@if($active == 'attendance') active @endif">
             <a href="{{ url('report/attendance') }}"><i class="fa fa-circle-o"></i>Attendance</a>
           </li>
+          <li class="@if($active == 'extra_ot') active @endif">
+            <a href="{{ url('report/extra-ot') }}"><i class="fa fa-circle-o"></i>Extra OT Sheet</a>
+          </li>
         </ul>
 
       </li>
