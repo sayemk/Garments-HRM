@@ -74,15 +74,17 @@ function overtimeCalc($duration, $officeHour){
 	}
 }
 
-function lateTimeCalc($inTime, $bufferTime)
+function lateTimeCalc($inTime, $bufferTime, $office_opening_time)
 {
-	$inTime = strtotime($inTime);
+	$inTime = strtotime("1970-01-01 $inTime UTC");
 
-	$bufferTime = strtotime($bufferTime);
+	$bufferTime = strtotime("1970-01-01 $bufferTime UTC");
 
-	$late = $inTime-$bufferTime;
+	$office_opening_time = strtotime("1970-01-01 $office_opening_time UTC");
 
 
+	$late = $inTime-($bufferTime+$office_opening_time);
+		
 	if ($late>0){
 		return gmdate("H:i:s",$late);
 	}else {
