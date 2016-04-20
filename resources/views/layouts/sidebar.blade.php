@@ -138,6 +138,29 @@
         </ul>
 
       </li>
+
+      <li class=" @if($parent_menu == 'admin') active @endif treeview">
+
+        <a href="#">
+          <i class="fa fa-gear"></i> <span>Administration</span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="  treeview-menu">
+          <li class="@if($active == 'user') active @endif">
+            <a href="{{ url('user') }}"><i class="fa fa-circle-o"></i>Users</a>
+          </li>
+          <li class="@if($active == 'role') active @endif">
+            <a href="{{ url('admin/role') }}"><i class="fa fa-circle-o"></i>Role</a>
+          </li>
+          <li class="@if($active == 'permission') active @endif">
+            <a href="{{ url('admin/permission') }}"><i class="fa fa-circle-o"></i>Permissions</a>
+          </li>
+
+        </ul>
+
+      </li>
+
    
 
     </ul>

@@ -1,10 +1,9 @@
-
 @extends('layouts.master')
 
-@section('title','Permission')
+@section('title','Role')
 @section('sidebar')
 
-   @include('layouts.sidebar',['active' =>'admin'])
+@include('layouts.sidebar',['active' =>'permission','parent_menu'=>'admin'])
 
 @endsection
 
