@@ -2,14 +2,11 @@
 
 @section('title','attendance')
 @section('sidebar')
-
-   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance Setting'])
-
+   @include('layouts.sidebar',['active' =>'attendance','parent_menu'=>'Attendance
+   Setting'])
 @endsection
-
 @section('content')
-  <!-- Info boxes -->
-         
+  <!-- Info boxes -->    
   <div class="box box-primary">
             
       <h3 class="box-title padding-left">Attendance</h3>

@@ -83,47 +83,28 @@
                         {!! $edit->footer !!}
                     </div>
                 </div>
-
-
             </div>
-
         </div>
         <div class="box-footer clearfix">
-
         </div>
     </div>
-
 </div>
-
-
-
 @endsection
-
 @section('script')
     <script>
         jQuery(document).ready(function($) {
-            $('form').validate({
+            $("#f_a").blur(function(){
+                var basic = Number($("#basic").val());
+                var house_rent = Number($("#house_rent").val());
+                var m_a = Number($("#m_a").val());
+                var t_a = Number($("#t_a").val());
+                var f_a = Number($("#f_a").val());
 
-                rules: {
+                var subtotal = basic+house_rent+m_a+t_a+f_a;
 
-                    name: {
-                        required: true,
-                    },
-                    description: {
-                        required: false
-                    },
-                    branch_id: {
-                        required: true,
-                        number:true
-                    }
-                    department_id: {
-                        required: true,
-                        number:true
-                    }
+                $("#gross").val(subtotal);
 
-                },
-
-            });
+            }); 
         });
     </script>
 @endsection

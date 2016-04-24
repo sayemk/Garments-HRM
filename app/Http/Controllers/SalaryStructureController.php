@@ -109,7 +109,7 @@ class SalaryStructureController extends Controller
             ->search(array('employee_id'))
             ->rule('required|exists:employees,id');
 
-        $edit->add('basic','Basic <span class="text-danger">*</span>','text')
+        $edit->add('basic','Basic <span class="text-danger salry">*</span>','text')
             ->rule('required');
         $edit->add('house_rent','House Rent <span class="text-danger">*</span>','text')
             ->rule('required');

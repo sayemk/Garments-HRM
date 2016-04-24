@@ -2351,9 +2351,9 @@ th {
     text-align: left
 }
 .table {
-    width: 100%;
     max-width: 100%;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    width:100%;
 }
 .table>tbody>tr>td,
 .table>tbody>tr>th,

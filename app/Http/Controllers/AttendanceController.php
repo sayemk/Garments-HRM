@@ -98,38 +98,44 @@ class AttendanceController extends Controller
                 $flag =false;
                 $line = str_replace("\t",' ',$line);
 
-                $attRecord = array_values(explode(" ",$line));
+                $attRecord = array_values(array_filter(explode(" ",$line)));
+                // echo "<pre>";
+                // print_r($attRecord);
+                // echo "</pre>";
 
-                $employee =Employee::where('employee_id',$attRecord[0])->first();
+                if (count($attRecord)>=8) {
+                    $employee =Employee::where('employee_id',$attRecord[0])->first();
 
-                if(!empty($employee)){
-                    $attendance = Attendance::where(['employee_id'=>$employee->id,'date'=>$attRecord[1]])->first();
-                    if (!empty($attendance))
-                    {
+                    if(!empty($employee)){
+                        $attendance = Attendance::where(['employee_id'=>$employee->id,'date'=>$attRecord[1]])->first();
+                        if (!empty($attendance))
+                        {
 
-                        $attendance->out_time = $attRecord[2];
-                        $attendance->duration = durationCalc($attendance->in_time,$attendance->out_time);
-                        
+                            $attendance->out_time = $attRecord[2];
+                            $attendance->duration = durationCalc($attendance->in_time,$attendance->out_time);
+                            
 
-                        $attendance->overtime = overtimeCalc($attendance->duration, $office_duration_time->value);
-                        if($attendance->save()){
-                            $flag = true;
-                        }
+                            $attendance->overtime = overtimeCalc($attendance->duration, $office_duration_time->value);
+                            if($attendance->save()){
+                                $flag = true;
+                            }
 
-                    } else{
-                        
-                        $attendance = new Attendance();
-                        $attendance->employee_id= $employee->id;
-                        $attendance->in_time = $attRecord[2];
-                        $attendance->date = $attRecord[1];
-                        
-                        
-                        $attendance->let_time = lateTimeCalc($attendance->in_time, $bufferTime->value, $office_opening_time->value);
-                        if($attendance->save()){
-                            $flag = true;
+                        } else{
+                            
+                            $attendance = new Attendance();
+                            $attendance->employee_id= $employee->id;
+                            $attendance->in_time = $attRecord[2];
+                            $attendance->date = $attRecord[1];
+                            
+                            
+                            $attendance->let_time = lateTimeCalc($attendance->in_time, $bufferTime->value, $office_opening_time->value);
+                            if($attendance->save()){
+                                $flag = true;
+                            }
                         }
                     }
-                }
+                } 
+                
 
                 $results[$line1] = $flag;
             }
