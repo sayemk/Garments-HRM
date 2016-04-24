@@ -112,7 +112,9 @@ Route::group(['middleware' => 'acl'], function () {
         Route::get('extra-ot/download', 'Reports\ExtraOtController@download');
     });
 
+
     Route::controller('user', 'UserController');
+
 
 
 });
