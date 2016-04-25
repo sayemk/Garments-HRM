@@ -18,6 +18,8 @@ Route::get('/home',function(){
 });
 
 Route::group(['middleware' => 'acl'], function () {
+
+    Route::get('/dashboard','DashboardController@index');
     
     Route::get('/organization/', 'OrganizationController@show');
     Route::any('/organization/edit', 'OrganizationController@edit');
