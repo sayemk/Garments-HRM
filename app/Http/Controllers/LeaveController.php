@@ -10,6 +10,7 @@ use App\Model\LeaveDetail;
 use App\Model\LeaveEmployee;
 use App\Model\LeaveType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Zofe\Rapyd\DataFilter\DataFilter;
 use Zofe\Rapyd\Facades\DataGrid;
 use Carbon\Carbon;
@@ -217,7 +218,7 @@ class LeaveController extends Controller
 
         $leaveapplication->year = Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateString('Y');
 
-        $leaveapplication->save();
+        $leaveapplicationCheck = $leaveapplication->save();
         //Delete existing Leave Details
         LeaveDetail::where('leave_id',$id)->delete();
 
@@ -230,6 +231,12 @@ class LeaveController extends Controller
             $leaveDetails->end_day = Carbon::createFromFormat('d/m/Y', $request->sub_end_date[$index])->toDateString('Y-m-d');
             $leaveDetails->payable = $request->payable[$index];
             $leaveDetails->save();
+        }
+        if ($leaveapplicationCheck)
+        {
+            Session::flash('system_message', "Leave Application Updated Successfully!");
+        }else{
+            Session::flash('system_message', "Fail! to updateLeave Application!");
         }
 
         return redirect('/leaveapplication/'.$id.'/edit');

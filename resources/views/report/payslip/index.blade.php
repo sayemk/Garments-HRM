@@ -27,7 +27,7 @@
         <div class="clearfix"></div>
         <div class="row" id="jquery_print">
             @foreach($salaries as $salary)
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
