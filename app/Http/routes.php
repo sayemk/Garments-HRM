@@ -14,10 +14,12 @@ Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::get('/home',function(){
-    return redirect('/organization');
+    return redirect('/dashboard');
 });
 
 Route::group(['middleware' => 'acl'], function () {
+
+    Route::get('/dashboard','DashboardController@index');
     
     Route::get('/organization/', 'OrganizationController@show');
     Route::any('/organization/edit', 'OrganizationController@edit');
@@ -87,6 +89,7 @@ Route::group(['middleware' => 'acl'], function () {
     //Salary Structure
     Route::get('/salary/structure', 'SalaryStructureController@index');
     Route::any('/salary/structure/edit', 'SalaryStructureController@edit');
+    Route::get('/salary/structure/{id}/edit', 'SalaryStructureController@update');
     Route::get('/salary/register', 'SalaryController@index');
     Route::any('/salary/register/edit', 'SalaryController@edit');
     Route::get('/salary/create','SalaryController@create');
