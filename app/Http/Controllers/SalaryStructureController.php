@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 use Zofe\Rapyd\DataEdit\DataEdit;
 
 
@@ -101,8 +102,30 @@ class SalaryStructureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Request $request)
     {
+        if(!empty(Input::get('update')))
+        {
+//            return redirect('/salary/structure/'.Input::get('update').'/edit')->withInput(Input::all());
+
+            $structure = SalaryStructure::find(Input::get('update'));
+            $structure->delete();
+
+            $structure = new SalaryStructure();
+
+            $structure->employee_id = $request->employee_employee_id;
+            $structure->basic = $request->basic;
+            $structure->house_rent = $request->house_rent;
+            $structure->m_a = $request->m_a;
+            $structure->t_a = $request->t_a;
+            $structure->f_a = $request->f_a;
+            $structure->gross = $request->gross;
+            $structure->ot_rate = $request->ot_rate;
+
+            $structure->save();
+
+            return redirect('/salary/structure');
+        }
         $edit = \DataEdit::source(new SalaryStructure());
         $edit->link("salary/structure","Salary Structure", "TR",['class' =>'btn btn-primary'])->back();
         $edit->add('employee.employee_id','Employee ID <span class="text-danger">*</span>','autocomplete')
@@ -143,7 +166,7 @@ class SalaryStructureController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return Input::all();
     }
 
     /**
