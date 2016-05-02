@@ -14,7 +14,7 @@ Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::get('/home',function(){
-    return redirect('/organization');
+    return redirect('/dashboard');
 });
 
 Route::group(['middleware' => 'acl'], function () {
